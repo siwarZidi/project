@@ -1,0 +1,3 @@
+;/*FB_PKG_DELIM*/
+
+__d("LSHasMatchingAttachmentCTA",[],(function(a,b,c,d,e,f){function a(){var a=arguments,b=a[a.length-1],c=[],d=[];return b.sequence([function(e){return b.sequence([function(d){return b.count(b.filter(b.db.table(19).fetch([[[a[0]]],"fk_attachments"]),function(c){return b.i64.eq(c.threadKey,a[0])&&c.attachmentFbid===a[1]})).then(function(a){return c[0]=a})},function(a){return d[0]=b.i64.gt(c[0],b.i64.cast([0,0]))}])},function(a){return b.resolve(d)}])}e.exports=a}),null);
