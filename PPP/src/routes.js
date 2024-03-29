@@ -66,14 +66,9 @@ const routes = [
     component: <SignIn />,
   },
   {
-    
+    name: "Schedule",
     route: "/register",
     component: <Register />,
-  },
-  {
-    
-    route: "/Reservation",
-    component: <Reservation />,
   },
 ];
 

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 // @mui material components
 import Card from "@mui/material/Card";
@@ -27,31 +26,25 @@ import routes from "routes";
 import bgImage from "assets/images/bg-sign-in.jpeg";
 
 function RegisterInBasic() {
-  
-        const [name, setName] = useState("");
-        const [year, setYear] = useState("");
-        const [email, setEmail] = useState("");
-        const [password,setPassword] = useState("");
-        
+  const [name, setName] = useState("");
+  const [year, setYear] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-        const onSubmitForm = async e => {
-            e.preventDefault();
-            
-            try {
-                const body = {name,year,email,password};
-                const response = await fetch("http://localhost:5000/club",
-                {
-                    method:"POST",
-                    headers:{"Content-Type":"application/json"},
-                    body:JSON.stringify(body)
-    
-                });
-                window.location = "/"
-                
-            } catch (err) {
-                console.error(err.messaage);
-            }
-        }
+  const onSubmitForm = async (e) => {
+    e.preventDefault();
+    try {
+      const body = { name, year, email, password };
+      const response = await fetch("http://localhost:5000/club", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      window.location = "/";
+    } catch (err) {
+      console.error(err.messaage);
+    }
+  };
 
   return (
     <>
@@ -105,21 +98,44 @@ function RegisterInBasic() {
                 <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}></Grid>
               </MKBox>
               <MKBox pt={4} pb={3} px={3}>
-                <MKBox component="form" role="form" onSubmit = {onSubmitForm}>
-                <MKBox mb={2}>
-                    <MKInput type="text" label="Club's Name" fullWidth value={name} onChange={e => setName(e.target.value)} />
+                <MKBox component="form" role="form" onSubmit={onSubmitForm}>
+                  <MKBox mb={2}>
+                    <MKInput
+                      type="text"
+                      label="Club's Name"
+                      fullWidth
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="text" label="Foundation year" fullWidth value={year} onChange={e => setYear(e.target.value)}/>
+                    <MKInput
+                      type="text"
+                      label="Foundation year"
+                      fullWidth
+                      value={year}
+                      onChange={(e) => setYear(e.target.value)}
+                    />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="email" label="Email" fullWidth value={email} onChange={e => setEmail(e.target.value)}/>
+                    <MKInput
+                      type="email"
+                      label="Email"
+                      fullWidth
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="password" label="Password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
+                    <MKInput
+                      type="password"
+                      label="Password"
+                      fullWidth
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
                   </MKBox>
-                  <MKBox display="flex" alignItems="center" ml={-1}>
-                  </MKBox>
+                  <MKBox display="flex" alignItems="center" ml={-1}></MKBox>
                   <MKBox mt={4} mb={1}>
                     <MKButton type="submit" variant="gradient" color="error" fullWidth>
                       Register
@@ -134,4 +150,4 @@ function RegisterInBasic() {
     </>
   );
 }
-export default RegisterInBasic ;
+export default RegisterInBasic;

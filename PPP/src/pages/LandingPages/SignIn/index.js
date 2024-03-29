@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 // react-router-dom components
@@ -29,9 +28,7 @@ import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import routes from "routes";
 // Images
 import bgImage from "assets/images/bg-sign-in.jpeg";
-import { useNavigate } from 'react-router-dom';
-
-
+import { useNavigate } from "react-router-dom";
 
 function SignInBasic() {
   const navigate = useNavigate();
@@ -42,21 +39,18 @@ function SignInBasic() {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
-    
     e.preventDefault();
-   
     try {
-      const body = {email,password};
+      const body = { email, password };
       const response = await fetch("http://localhost:5000/login", {
-        method:"POST",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       });
       if (response.ok) {
         console.log("Login successful!");
         setLoggedIn(true);
-        navigate('/Reservation');
-        
+        navigate("/Reservation");
       } else {
         console.error("Login failed");
         alert("fail");
@@ -64,9 +58,7 @@ function SignInBasic() {
     } catch (error) {
       console.error("Error:", error);
     }
-   
   };
-
 
   return (
     <>
@@ -122,10 +114,22 @@ function SignInBasic() {
               <MKBox pt={4} pb={3} px={3}>
                 <MKBox component="form" role="form" onSubmit={handleSubmit}>
                   <MKBox mb={2}>
-                    <MKInput type="email" label="Email" fullWidth value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <MKInput
+                      type="email"
+                      label="Email"
+                      fullWidth
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput type="password" label="Password" fullWidth value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <MKInput
+                      type="password"
+                      label="Password"
+                      fullWidth
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
                   </MKBox>
                   <MKBox display="flex" alignItems="center" ml={-1}>
                     <Switch checked={rememberMe} onChange={handleSetRememberMe} />
