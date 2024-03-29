@@ -32,7 +32,6 @@ import { useNavigate } from "react-router-dom";
 
 function SignInBasic() {
   const navigate = useNavigate();
-  const [loggedIn, setLoggedIn] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
   const [email, setEmail] = useState("");
@@ -49,7 +48,6 @@ function SignInBasic() {
       });
       if (response.ok) {
         console.log("Login successful!");
-        setLoggedIn(true);
         navigate("/Reservation");
       } else {
         console.error("Login failed");

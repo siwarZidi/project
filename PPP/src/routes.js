@@ -42,8 +42,6 @@ Coded by www.creative-tim.com
 //import Author from "layouts/pages/landing-pages/author";
 import SignIn from "layouts/pages/authentication/sign-in";
 import Register from "layouts/pages/register";
-import Reservation from "layouts/pages/reservation";
-
 const routes = [
   /*{
     name: "about us",
