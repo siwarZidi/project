@@ -35,38 +35,40 @@ Coded by www.creative-tim.com
           you can set the columns amount based on this key.
   10. The `rowsPerColumn` key is used to define that how many rows should be in a column.
 */
-
-// Pages
-//import AboutUs from "layouts/pages/landing-pages/about-us";
-//import ContactUs from "layouts/pages/landing-pages/contact-us";
-//import Author from "layouts/pages/landing-pages/author";
 import SignIn from "layouts/pages/authentication/sign-in";
-import Register from "layouts/pages/register";
+import Icon from "@mui/material/Icon";
+import MyGrid from "pages/LandingPages/reservation2";
+
 const routes = [
-  /*{
-    name: "about us",
-    route: "/pages/landing-pages/about-us",
-    component: <AboutUs />,
-  },
   {
-    name: "contact us",
-    route: "/pages/landing-pages/contact-us",
-    component: <ContactUs />,
-  },
-  {
-    name: "author",
-    route: "/pages/landing-pages/author",
-    component: <Author />,
-  },*/
-  {
-    name: "sign in",
-    route: "/pages/authentication/sign-in",
-    component: <SignIn />,
-  },
-  {
-    name: "Schedule",
-    route: "/register",
-    component: <Register />,
+    name: "login",
+    icon: <Icon>account_circle</Icon>,
+    columns: 1,
+    rowsPerColumn: 2,
+    collapse: [
+      {
+        name: "sign in as :",
+        collapse: [
+          {
+            name: "Guest",
+            route: "/pages/authentication/sign-in",
+            component: <SignIn />,
+          },
+          {
+            name: "User",
+            route: "/pages/landing-pages/reservation2G",
+            component: <MyGrid />,
+          },
+          {
+            name: "Administrater",
+            route: "/pages/authentication/sign-in",
+            component: <SignIn />,
+          },
+        ],
+      },
+    ],
+    //route: "/pages/authentication/sign-in",
+    //component: <SignIn />,
   },
 ];
 
