@@ -37,8 +37,7 @@ Coded by www.creative-tim.com
 */
 import SignIn from "layouts/pages/authentication/sign-in";
 import Icon from "@mui/material/Icon";
-import MyGrid from "pages/LandingPages/reservation2";
-
+import AuthAdminPage from "layouts/pages/Admin";
 const routes = [
   {
     name: "login",
@@ -50,19 +49,14 @@ const routes = [
         name: "sign in as :",
         collapse: [
           {
-            name: "Guest",
+            name: "User",
             route: "/pages/authentication/sign-in",
             component: <SignIn />,
-          },
-          {
-            name: "User",
-            route: "/pages/landing-pages/reservation2G",
-            component: <MyGrid />,
           },
           {
             name: "Administrater",
-            route: "/pages/authentication/sign-in",
-            component: <SignIn />,
+            route: "/pages/authentication/sAdmin",
+            component: <AuthAdminPage />,
           },
         ],
       },

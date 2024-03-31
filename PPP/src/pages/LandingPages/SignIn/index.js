@@ -147,7 +147,7 @@ function SignInBasic() {
                         fontWeight="medium"
                         textGradient
                       >
-                        Sign up
+                         <Link to="/register">Sign up</Link>
                       </MKTypography>
                     </MKTypography>
                   </MKBox>
