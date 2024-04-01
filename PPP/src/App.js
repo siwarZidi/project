@@ -29,6 +29,7 @@ import Register from "layouts/pages/register";
 
 // Material Kit 2 React routes
 import routes from "routes";
+import Reservation from "layouts/pages/reservation";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -43,11 +44,9 @@ export default function App() {
       if (route.collapse) {
         return getRoutes(route.collapse);
       }
-
       if (route.route) {
         return <Route exact path={route.route} element={route.component} key={route.key} />;
       }
-
       return null;
     });
 
@@ -57,7 +56,8 @@ export default function App() {
       <Routes>
         {getRoutes(routes)}
         <Route path="/presentation" element={<Presentation />} />
-        <Route path="/register" element={<Register/>} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/reservation" element={<Reservation />} />
         <Route path="*" element={<Navigate to="/presentation" />} />
       </Routes>
     </ThemeProvider>

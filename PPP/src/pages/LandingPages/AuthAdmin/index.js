@@ -1,6 +1,6 @@
 import { useState } from "react";
 // react-router-dom components
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 // @mui material components
 import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
@@ -93,7 +93,7 @@ function AuthAdminBasic() {
                 textAlign="center"
               >
                 <MKTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                  ADMIN
+                  Sign in as Admin
                 </MKTypography>
                 <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}></Grid>
               </MKBox>
@@ -158,4 +158,4 @@ function AuthAdminBasic() {
     </>
   );
 }
-export default AuthAdminBasic ;
+export default AuthAdminBasic;
