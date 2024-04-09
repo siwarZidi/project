@@ -4,10 +4,10 @@ const cors = require("cors");
 const pool = require("./db");
 app.use(cors());
 app.use(express.json());
-//Routes//
 
+//routes for the user:
 
-//create a club
+//create a club:done
 app.post("/club",async(req,res)=>{
     try{
         const {name, year, email , password} = req.body;
@@ -20,7 +20,8 @@ app.post("/club",async(req,res)=>{
 
     }
 });
-//login
+
+//login:done
 app.post("/login", async (req, res) => {
     
     try {
@@ -38,26 +39,75 @@ app.post("/login", async (req, res) => {
       res.status(500).json({ message: "Internal Server Error" });
     }
   });
-  //Make a reservation
-  app.post("/reservation", async (req, res) => {
-    
-    try {
-      const { clubname,classname, date,time } = req.body;
-      const query = "SELECT * FROM reservation WHERE classname = $1 AND date = $2 AND time=$3 RETURNING *";
-      const { rows } = await pool.query(query, [classname, date,time]);
-      if (rows.length > 0) {
-        res.status(401).json({ message: "Reservation failed" });
-        
-      } else {
-        const newReservation = await pool.query("INSERT INTO reservation (clubname,classname, date,time) VALUES ($1,$2,$3,$4) ",[clubname,classname, date,time]);
-        res.status(200).json({ message: "Reservation succ" });
-        res.json(newReservation.rows[0]);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      res.status(500).json({ message: "Internal Server Error" });
+
+  //Make a reservation: done (si la salle est reservée à cette date , un message d'erreur s'affiche)
+app.post("/reservation",async(req,res)=>{
+  try{
+    const {clubname,num_salle,date}=req.body;
+    q1='select * from reservation where num_salle=$1 and date=$2';
+    const rslt=await pool.query(q1,[num_salle,date]);
+    if (rslt.rowCount===0){
+      sqlquery='INSERT INTO reservation (clubname,num_salle,date) VALUES ($1,$2,$3)';
+      const result=await pool.query(sqlquery,[clubname,num_salle,date]);
+      res.status(200).send("reservation added successfully");
+
+    }else {
+      res.send("salle non disponible à cette date");
     }
-  });
+  }catch(error){
+    console.error("Error:",error);
+    res.status(500).json({message:"Internal Server Error"});
+}});
+   //cancel a reservation:done:(NB:dans la page du club devant chaque reser existe un bouton qui va etre dirigé vers cet url avec l'id)
+   app.delete("/reservation/:id",async(req,res)=>{
+    try{
+      id=req.params.id*1;
+      sqlquery='DELETE FROM reservation WHERE reservation_id=$1';
+      result=await pool.query(sqlquery,[id]);
+      if (result.rowCount===0){
+        res.send("reservation n'existe pas deja");
+      }else {
+        res.send("delete successfully");
+      }}catch(err){
+        console.error("Error",error);
+        res.status(500).json({message:"Internal Server Error"});
+      }
+    
+    
+    });
+   //update reservation: à verifier:
+   app.put("/reservation/:id",async(req,res)=>{
+    try{
+      const reservation_id=req.params.id * 1;
+      const {num_salle,date}=req.body;
+      q1='select * from reservation where num_salle=$1 and date=$2';
+      const rslt=await pool.query(q1,[num_salle,date]);
+      if (rslt.rowCount === 0){
+      sqlquery='UPDATE reservation SET num_salle=$1 and date=$2 WHERE reservation_id=$3';
+      const result=await pool.query(sqlquery,[num_salle,date,reservation_id]);
+          if(result.rowCount === 1){
+            res.status(200).send({result:"reservation found",msg:"updated successfully"});
+          }else{
+            res.status(404).send('reservation not found');
+          }
+      }else {
+      res.send("salle non disponible à cette date");
+    }
+  }catch(error){
+          console.error(error);
+          res.status(500).send('update failed');
+      }
+
+
+   })
+
+
+
+
+  //manage all the urls that begin with /admin with the /routes/admin file:
+const adminRouter =require("./routes/admin")
+app.use("/admin",adminRouter)
+
 app.listen(5000,()=>{
     console.log("server runinig on port 5000");
 });
