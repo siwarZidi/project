@@ -1,6 +1,8 @@
 FROM node:20.12.0-alpine
 WORKDIR /app
-COPY ./package.json ./
+COPY ./package*.json ./
 RUN npm install
+RUN npm install -g nodemon
 COPY . .
-CMD ["npm","RUN","dev"]
+EXPOSE 5000
+CMD ["npm","run","dev"]

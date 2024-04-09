@@ -4,9 +4,12 @@ const cors = require("cors");
 const pool = require("./db");
 app.use(cors());
 app.use(express.json());
+//NB: changes in the localhost doesn't affect the docker container:
 
 //routes for the user:
-
+app.get("/",(req,res)=>{
+  res.send("hello world!!")
+})
 //create a club:done
 app.post("/club",async(req,res)=>{
     try{
