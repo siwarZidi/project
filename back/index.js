@@ -22,7 +22,7 @@ app.post("/club",async(req,res)=>{
         console.error(err.message);
 
     }
-});
+});   
 
 //login:done
 app.post("/login", async (req, res) => {
