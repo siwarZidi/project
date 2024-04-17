@@ -8,10 +8,15 @@ const router = express.Router();
 router.post("/register",async(req,res)=>{
     try{
         const {name, year, email , password} = req.body;
+        const resultat=await pool.query("SELECT * FROM club WHERE name=$1",[name]);
+        if (resultat.rowCount === 0){
         const newClub = await pool.query("INSERT INTO club (name, year, email , password) VALUES ($1,$2,$3,$4) RETURNING *",
         [name, year, email , password]
         );
         res.json(newClub.rows[0]);
+    }else {
+        res.send("le club existe deja")
+    }
     }catch (err){
         console.error(err.message);
 
@@ -32,13 +37,10 @@ router.post("/login", async (req, res) => {
         res.status(401).json({message: "Login failed" });
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", err);
       res.status(500).json({ message: "Internal Server Error" });
     }
   });
-
-
-
 
   
 //get a club:done
@@ -51,40 +53,30 @@ router.get("/get",async(req,res)=>{
       console.error(err.message);
 }});
    
-//supprimer un club:(dynamic id : use the id entred in the url) :done
-router.delete("/delete/:id",async(req,res)=>{
-    const name = req.params.id;
-
-    const sqlquery= 'DELETE FROM club WHERE name=$1';
+//supprimer un club:done
+router.delete("/delete",async(req,res)=>{
     try{
-        await pool.query(sqlquery,[name]);
-        res.status(200).send({ success:true});
+        const {name}=req.body;
+        const sqlquery= 'DELETE FROM club WHERE name=$1';
+        const resultat=await pool.query("SELECT * FROM club WHERE name=$1",[name]);
+        if (resultat.rowCount > 0){
+            await pool.query(sqlquery,[name]);
+            res.status(200).send({ success:true});
+        }else{
+            res.send("le club n'existe pas déjà");
+        }
     }catch (error){
         console.log(error);
         res.status(500).send({success: false, error:'delete failed.'});
     }});
 
-//ajouter un club:done
-router.post("/post",async(req,res)=>{
-    try{
-        const {name, year, email , password} = req.body;
-        const newClub = await pool.query("INSERT INTO club (name, year, email , password) VALUES ($1,$2,$3,$4) RETURNING *",
-        [name, year, email , password]
-        );
-        res.json(newClub.rows[0]);
-    }catch (err){
-        console.error(err.message);
-
-    }
-});
-
-//update un club:
+//update un club: à verifier 
 router.put("/update/:id",async(req,res)=>{
     try{
-        const name=req.params.id * 1;
+        const id=req.params.id;
         const {year,email,password}=req.body;
-        sqlquery='UPDATE club SET year=$1 and email=$2 and password=$3 WHERE name=$4';
-        const result= await pool.query(sqlquery,[year,email,password,name]);
+        sqlquery='UPDATE club SET year=$1 and email=$2 and password=$3 WHERE club_id=$4';
+        const result= await pool.query(sqlquery,[year,email,password,club_id]);
         if(result.rowCount === 1){
             res.status(200).send({result:"club found",msg:"updated successfully"});
         }else{
@@ -94,7 +86,5 @@ router.put("/update/:id",async(req,res)=>{
             console.error(error);
             res.status(500).send('update failed');
         }
-
-
-})
+});
   module.exports = router; 
