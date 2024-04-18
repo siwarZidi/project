@@ -30,6 +30,8 @@ import Register from "layouts/pages/register";
 // Material Kit 2 React routes
 import routes from "routes";
 import Reservation from "layouts/pages/reservation";
+import Reserve from "layouts/pages/reserve";
+import Contact from "pages/LandingPages/Author/sections/Contact";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -58,6 +60,8 @@ export default function App() {
         <Route path="/presentation" element={<Presentation />} />
         <Route path="/register" element={<Register />} />
         <Route path="/reservation" element={<Reservation />} />
+        <Route path="/reserve" element={<Reserve />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<Navigate to="/presentation" />} />
       </Routes>
     </ThemeProvider>
