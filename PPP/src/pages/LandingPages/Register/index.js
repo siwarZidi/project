@@ -35,7 +35,7 @@ function RegisterInBasic() {
     e.preventDefault();
     try {
       const body = { name, year, email, password };
-      await fetch("http://localhost:5000/club", {
+      await fetch("http://localhost:5000/club/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

@@ -2,11 +2,38 @@ const express = require('express');
 const pool = require('../db')
 const router = express.Router();
 
-  
+//get all reservation: done
+router.get("/get",async(req,res)=>{
+  try{
+      const {clubname,num_salle,date,starttime,endtime} = req.body;
+      const allReservations = await pool.query("SELECT * FROM reservation");
+      res.json(allReservations.rows)
+      
+  }catch (err){
+      console.error(err.message);
+  }
+});
+router.get("/gett",async(req,res)=>{
+  try{
+      const reservationId = "17";
+      const Reservation = await pool.query("SELECT * FROM reservation where reservation_id =$1" ,[reservationId]);
+      res.json(Reservation.rows)
+      
+  }catch (err){
+      console.error(err.message);
+  }
+});
+
  //Make a reservation: done (si la salle est reservée à cette date , un message d'erreur s'affiche)
- router.post("/post",async(req,res)=>{
+ router.post("/make",async(req,res)=>{
     try{
       const {clubname,num_salle,date,starttime,endtime}=req.body;
+      const resultat=await pool.query('select * from reservation');
+      if (resultat.rowCount === 0){
+        sqlquery='INSERT INTO reservation (clubname,num_salle,date,starttime,endtime) VALUES ($1,$2,$3,$4,$5)';
+        const result=await pool.query(sqlquery,[clubname,num_salle,date,starttime,endtime]);
+        res.status(200).send("reservation added successfully");
+      }else{
       q1='select * from reservationdemande where num_salle=$1 and date=$2 and endtime > $3 and starttime < $4';
       const rslt=await pool.query(q1,[num_salle,date,starttime,endtime]);
       if (rslt.rowCount===0){
@@ -16,13 +43,13 @@ const router = express.Router();
   
       }else {
         res.send("salle non disponible à cette date");
-      }
+      }}
     }catch(error){
       console.error("Error:",error);
       res.status(500).json({message:"Internal Server Error"});
   }});
 //cancel a reservation:done:(NB:dans la page du club devant chaque reser existe un bouton qui va etre dirigé vers cet url avec l'id)
-router.delete("/delete/:id",async(req,res)=>{
+router.delete("/cancel/:id",async(req,res)=>{
   try{
     id=req.params.id*1;
     sqlquery='DELETE FROM reservation WHERE reservation_id=$1';
@@ -36,33 +63,57 @@ router.delete("/delete/:id",async(req,res)=>{
       res.status(500).json({message:"Internal Server Error"});
     }
   
-  
   });
- //update reservation: à verifier:
-router.put("/update/:id",async(req,res)=>{
-  try{
-    const reservation_id=req.params.id ; 
-    const {num_salle,date,starttime,endtime}=req.body;
-    const rslt1=await pool.query('select * from reservation where reservation_id=$1',[reservation_id]);
-    q1='select * from reservation where  date=$1 and endtime > $2 and starttime < $3';
-    const rslt2=await pool.query(q1,[date,starttime,endtime]);
-    if (rslt1.rowCount > 0 && rslt2.rowCount === 0){
-    sqlquery='UPDATE reservation SET num_salle=$2, date=$3, starttime=$4, endtime=$5 WHERE reservation_id=$1 ';
-    const result=await pool.query(sqlquery,[reservation_id,num_salle, date, starttime, endtime]);
-        if(result.rowCount === 1){
-          res.status(200).send({result:"reservation found",msg:"updated successfully"});
-        }else{
-          res.status(404).send('reservation not found');
-        }
-    }else {
-    res.send("salle non disponible à cette date");
-  }
-}catch(error){
-        console.error(error);
-        res.status(500).send('update failed');
+  
+  //update reservation:à vérifier
+  router.put("/update/:id", async (req, res) => {
+    try {
+        const reservationId = req.params.id;
+        const { roomname, date, starttime, endtime } = req.body;
+
+        // Récupérer les données actuelles de la réservation
+        const currentReservation = await pool.query('SELECT * FROM reservation WHERE reservation_id = $1', [reservationId]);
+        const currentData = currentReservation.rows[0];
+
+        // Créer un objet avec les champs mis à jour
+        const updatedData = {
+            roomname: roomname || currentData.roomname,
+            date: date || currentData.date,
+            starttime: starttime || currentData.starttime,
+            endtime: endtime || currentData.endtime
+        };
+
+        // Mettre à jour la réservation
+        const updateQuery = `
+            UPDATE reservation 
+            SET roomname = $1, date = $2, starttime = $3, endtime = $4 
+            WHERE reservation_id = $5
+        `;
+        await pool.query(updateQuery, [updatedData.roomname, updatedData.date, updatedData.starttime, updatedData.endtime, reservationId]);
+
+        // Répondre avec un message de succès
+        res.status(200).send({ result: "Reservation found", msg: "Updated successfully" });
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour :', error);
+        res.status(500).send('Update failed');
     }
+});
+
+  
+  
+  
+//accept reservation by the admin :
+router.post("/accept", async(req,res)=>{
+try{
+    const {num_salle,date,starttime,endtime}=req.body;
+    query='INSERT INTO reservation (clubname,num_salle,date,starttime,endtime) VALUES ($1,$2,$3,$4,$5)';
+    const result=await pool.query(query,[clubname,num_salle,date,starttime,endtime]);
+}catch(err){
+    console.error("Error",err);
+    res.status(500).json({message:"Internal Server Error"});
+  }
+});
 
 
- });
 
  module.exports = router; 
