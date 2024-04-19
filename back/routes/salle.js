@@ -17,11 +17,17 @@ router.get("/get",async(req,res)=>{
 
 //ajouter une salle (admin):done
 router.post("/post",async (req,res)=>{
-    const sqlquery='INSERT INTO salles (num_salle, nbre_place) VALUES ($1,$2) RETURNING *'
     try{
       const {num_salle, nbre_place } = req.body;
-      const result = await pool.query(sqlquery,[num_salle, nbre_place]);
-      res.json(result.rows[0]);
+      query='SELECT * FROM salles WHERE num_salle=$1';
+      const rslt=await pool.query(query,[num_salle]);
+      if (rslt.rowCount===0){
+        const sqlquery='INSERT INTO salles (num_salle, nbre_place) VALUES ($1,$2) RETURNING *';
+        const result = await pool.query(sqlquery,[num_salle, nbre_place]);
+        res.json(result.rows[0]);
+    }else {
+        res.send("la salle existe deja dans la base");
+    }
   }catch (err){
       console.error(err.message);
   
@@ -64,4 +70,3 @@ router.put("/update/:id",async(req,res)=>{
 });
 
 module.exports = router; 
-

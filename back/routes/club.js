@@ -2,14 +2,18 @@ const express = require('express');
 const pool = require('../db')
 const router = express.Router();
 
+const multer = require('multer');
+const storage = multer.memoryStorage(); // Stocker l'image en mémoire
+const upload = multer({ storage: storage });
 
 
 //register:done
-router.post("/register",async(req,res)=>{
+router.post("/register", upload.single('avatar'),async(req,res)=>{
     try{
         const {name, year, email , password} = req.body;
-        const newClub = await pool.query("INSERT INTO club (name, year, email , password) VALUES ($1,$2,$3,$4) RETURNING *",
-        [name, year, email , password]
+        const avatarData = req.file.buffer;
+        const newClub = await pool.query("INSERT INTO club (name, year, email , password,avatar) VALUES ($1,$2,$3,$4,$5) RETURNING *",
+        [name, year, email , password,avatarData]
         );
         res.json(newClub.rows[0]);
     }catch (err){
@@ -27,6 +31,8 @@ router.post("/login", async (req, res) => {
       const { rows } = await pool.query(query, [email, password]);
       if (rows.length > 0) {
         res.status(200).json({ message: "Login successful" });
+        req.session.clubName=rows[0].name;
+        console.log(req.session.clubName);
         
       } else {
         res.status(401).json({message: "Login failed" });
@@ -38,7 +44,14 @@ router.post("/login", async (req, res) => {
   });
 
 
-
+router.get('/clubName',(req,res)=>{
+    if(req.session.clubName){
+    return res.json({valid:true,clubName:req.session.clubName});}
+    else{
+        return res.json({valid:false});
+    }
+}
+);
 
   
 //get a club:done
