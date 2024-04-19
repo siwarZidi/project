@@ -146,14 +146,18 @@ function Reservation() {
                     <Form.Group controlId="SearchClub">
                       <Form.Label>Club: </Form.Label>
                       <Form.Control
-                        as="select"
+                        list="clubOptions"
+                        type="text"
                         value={searchClub}
                         onChange={(e) => setSearchClub(e.target.value)}
-                      >
-                        <option value="">All</option>
-                        <option value="disponible">disponible</option>
-                        <option value="réservée">réservée</option>
-                      </Form.Control>
+                      ></Form.Control>
+                      <datalist id="clubOptions">
+                        <option value="Edge" />
+                        <option value="Firefox" />
+                        <option value="Chrome" />
+                        <option value="Opera" />
+                        <option value="Safari" />
+                      </datalist>
                     </Form.Group>
                   </Form>
                 )}
