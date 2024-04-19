@@ -1,17 +1,47 @@
 // @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import FilterIcon from "@mui/icons-material/Filter";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
-
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Popup from "components/PopUp/Popup";
 // Images
-import bgImage from "assets/images/examples/blog2.jpg";
+import bgImage from "assets/images/insat.jpg";
 
 function Contact() {
+  const navigate = useNavigate();
+  const [clubname, setclubname] = useState("");
+  const [num_salle, setclassnum] = useState("");
+  const [date, setdate] = useState("");
+  const [starttime, setStarttime] = useState("");
+  const [endtime, setFinishtime] = useState("");
+  const [buttonPopup, setButtonPopup] = useState(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const body = { clubname, num_salle, date, starttime, endtime };
+      const response = await fetch("http://localhost:5000/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (response.ok) {
+        console.log("Reservation successful!");
+        navigate("/presentation");
+      } else {
+        console.error("Login failed");
+        alert("the classroom is already taken !!");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   return (
     <MKBox component="section" py={{ xs: 0, lg: 6 }}>
       <Container>
@@ -52,10 +82,10 @@ function Contact() {
                 >
                   <MKBox py={6} pr={6} pl={{ xs: 6, sm: 12 }} my="auto">
                     <MKTypography variant="h3" color="white" mb={1}>
-                      Contact Information
+                      Make your reservation
                     </MKTypography>
                     <MKTypography variant="body2" color="white" opacity={0.8} mb={3}>
-                      Fill up the form and our Team will get back to you within 24 hours.
+                      Fill up the form and the administration will get back to you within 24 hours.
                     </MKTypography>
                     <MKBox display="flex" p={1}>
                       <MKTypography variant="button" color="white">
@@ -69,7 +99,7 @@ function Contact() {
                         ml={2}
                         fontWeight="regular"
                       >
-                        (+40) 772 100 200
+                        (+216) ***********
                       </MKTypography>
                     </MKBox>
                     <MKBox display="flex" color="white" p={1}>
@@ -84,7 +114,7 @@ function Contact() {
                         ml={2}
                         fontWeight="regular"
                       >
-                        hello@creative-tim.com
+                        ahmed.trigui@insat.ucar.tn
                       </MKTypography>
                     </MKBox>
                     <MKBox display="flex" color="white" p={1}>
@@ -99,7 +129,7 @@ function Contact() {
                         ml={2}
                         fontWeight="regular"
                       >
-                        Dyonisie Wolf Bucharest, RO 010458
+                        Insat,Tunis
                       </MKTypography>
                     </MKBox>
                     <MKBox mt={3}>
@@ -120,45 +150,66 @@ function Contact() {
                 </MKBox>
               </Grid>
               <Grid item xs={12} lg={7}>
-                <MKBox component="form" p={2} method="post">
+                <MKBox component="form" p={2} role="form" onsubmit={handleSubmit}>
                   <MKBox px={3} py={{ xs: 2, sm: 6 }}>
                     <MKTypography variant="h2" mb={1}>
-                      Say Hi!
-                    </MKTypography>
-                    <MKTypography variant="body1" color="text" mb={2}>
-                      We&apos;d like to talk with you.
+                      Fill out the form
                     </MKTypography>
                   </MKBox>
                   <MKBox pt={0.5} pb={3} px={3}>
                     <Grid container>
-                      <Grid item xs={12} pr={1} mb={6}>
+                      <Grid item xs={12} pr={1} mb={3}>
                         <MKInput
-                          variant="standard"
-                          label="My name is"
-                          placeholder="Full Name"
-                          InputLabelProps={{ shrink: true }}
+                          pb={2}
+                          type="text"
+                          label="Club's Name"
                           fullWidth
+                          value={clubname}
+                          onChange={(e) => setclubname(e.target.value)}
                         />
                       </Grid>
-                      <Grid item xs={12} pr={1} mb={6}>
+                      <Grid item xs={12} pr={1} mb={3}>
                         <MKInput
-                          variant="standard"
-                          label="I'm looking for"
-                          placeholder="What you love"
-                          InputLabelProps={{ shrink: true }}
+                          type="text"
+                          label="Class Number"
                           fullWidth
+                          value={num_salle}
+                          onChange={(e) => setclassnum(e.target.value)}
                         />
                       </Grid>
-                      <Grid item xs={12} pr={1} mb={6}>
+                      <Grid item xs={12} pr={1} mb={3}>
                         <MKInput
-                          variant="standard"
-                          label="Your message"
-                          placeholder="I want to say that..."
-                          InputLabelProps={{ shrink: true }}
+                          type="date"
                           fullWidth
-                          multiline
-                          rows={6}
+                          value={date}
+                          onChange={(e) => setdate(e.target.value)}
                         />
+                      </Grid>
+                      <Grid item xs={12} pr={1} mb={1}>
+                        <MKBox mb={2}>
+                          <MKTypography variant="h6" mb={1}>
+                            Starting from :
+                          </MKTypography>
+                          <MKInput
+                            type="time"
+                            fullWidth
+                            value={starttime}
+                            onChange={(e) => setStarttime(e.target.value)}
+                          />
+                        </MKBox>
+                      </Grid>
+                      <Grid item xs={12} pr={1} mb={3}>
+                        <MKTypography variant="h6" mb={1}>
+                          Finishing at :
+                        </MKTypography>
+                        <MKBox mb={2}>
+                          <MKInput
+                            type="time"
+                            fullWidth
+                            value={endtime}
+                            onChange={(e) => setFinishtime(e.target.value)}
+                          />
+                        </MKBox>
                       </Grid>
                     </Grid>
                     <Grid
@@ -170,8 +221,17 @@ function Contact() {
                       textAlign="right"
                       ml="auto"
                     >
-                      <MKButton variant="gradient" color="info">
-                        Send Message
+                      <MKButton
+                        variant="gradient"
+                        color="error"
+                        onClick={() => setButtonPopup(true)}
+                        style={{ marginRight: "10px" }}
+                        startIcon={<FilterIcon />}
+                      >
+                        Filtrer
+                      </MKButton>
+                      <MKButton variant="gradient" color="error">
+                        Send Request
                       </MKButton>
                     </Grid>
                   </MKBox>
@@ -181,6 +241,7 @@ function Contact() {
           </MKBox>
         </Grid>
       </Container>
+      <Popup trigger={buttonPopup} setTrigger={setButtonPopup}></Popup>
     </MKBox>
   );
 }
