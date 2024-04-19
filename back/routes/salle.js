@@ -1,18 +1,12 @@
 const express = require('express');
-const pool = require('../db')
+const pool = require('../db');
+const { getsalles } = require('../controllers/salleController');
 const router = express.Router();
 
 //acces pour l'admin seulement:
 
 //get salle:(afficher la table salles): done
-router.get("/get",async(req,res)=>{
-    const sqlquery='SELECT * FROM salles';
-    try{
-      const data = await pool.query(sqlquery);
-      res.status(200).json(data.rows);
-  }catch (err){
-      console.error(err.message);
-}});
+router.route("/get").get(getsalles);
 
 
 //ajouter une salle (admin):done

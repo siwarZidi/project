@@ -1,6 +1,7 @@
 const express = require('express');
 const pool = require('../db')
 const router = express.Router();
+const { getclub } = require('../controllers/clubController');
 
 
 
@@ -44,14 +45,7 @@ router.post("/login", async (req, res) => {
 
   
 //get a club:done
-router.get("/get",async(req,res)=>{
-    const sqlquery='SELECT * FROM club';
-    try{
-      const data = await pool.query(sqlquery);
-      res.status(200).json(data.rows);
-  }catch (err){
-      console.error(err.message);
-}});
+router.route("/get").get(getclub);
    
 //supprimer un club:done
 router.delete("/delete",async(req,res)=>{
