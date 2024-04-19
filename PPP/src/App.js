@@ -61,8 +61,7 @@ export default function App() {
         <Route path="/presentation" element={<Presentation />} />
         <Route path="/register" element={<Register />} />
         <Route path="/reservation" element={<AdminReservation />} />
-        <Route path="/reserve" element={<Reserve />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/reserve" element={<Contact />} />
         <Route path="*" element={<Navigate to="/presentation" />} />
       </Routes>
     </ThemeProvider>

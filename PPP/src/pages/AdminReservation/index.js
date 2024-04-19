@@ -50,6 +50,7 @@ const ListReservations = () => {
             });
             // Fermer le popup après la mise à jour
             closeUpdateForm();
+            window.location = "/reservation";
         } catch (error) {
             console.error('Erreur lors de la mise à jour de la réservation:', error);
         }

@@ -30,7 +30,7 @@ function RegisterInBasic() {
   const [year, setYear] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [avatar, setAvatar] = useState(null); // Ajout de l'état pour l'image
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
@@ -44,6 +44,10 @@ function RegisterInBasic() {
     } catch (err) {
       console.error(err.messaage);
     }
+  };
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    setAvatar(file);
   };
 
   return (
@@ -124,6 +128,12 @@ function RegisterInBasic() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
+                  </MKBox>
+                  <MKBox mb={2}>
+                    <MKInput
+                     type="file" 
+                     onChange={handleAvatarChange} 
+                     accept="image/*" />
                   </MKBox>
                   <MKBox display="flex" alignItems="center" ml={-1}></MKBox>
                   <MKBox mt={4} mb={1}>
