@@ -36,29 +36,30 @@ const ListReservations = () => {
     setShowUpdateForm(false);
   };
 
-  // Fonction pour gérer la soumission du formulaire de mise à jour
-  const handleSubmitUpdate = async () => {
-    try {
-      // Envoi de la requête PUT au backend avec les nouvelles données de réservation
-      await fetch(`http://localhost:5000/reservation/update/${updateData.reservation_id}`, {
-        method: "PUT", // Utilisez la méthode PUT pour la mise à jour
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updateData),
-      });
-      // Fermer le popup après la mise à jour
-      closeUpdateForm();
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour de la réservation:", error);
-    }
-  };
-  //filtrage
-  const [date, setDate] = useState("");
-  const [Starttime, setStartTime] = useState("");
-  const [Endtime, setEndTime] = useState("");
-  const [name, setName] = useState("");
-  const [room, setRoom] = useState("");
+    // Fonction pour gérer la soumission du formulaire de mise à jour
+    const handleSubmitUpdate = async () => {
+        try {
+            // Envoi de la requête PUT au backend avec les nouvelles données de réservation
+            await fetch(`http://localhost:5000/reservation/update/${updateData.reservation_id}`, {
+                method: 'PUT', // Utilisez la méthode PUT pour la mise à jour
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updateData)
+            });
+            // Fermer le popup après la mise à jour
+            closeUpdateForm();
+            window.location = "/reservation";
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour de la réservation:', error);
+        }
+    };
+    //filtrage 
+    const [date, setDate] = useState('');
+    const [Starttime, setStartTime] = useState('');
+    const [Endtime, setEndTime] = useState('');
+    const [name, setName] = useState('');
+    const [room, setRoom] = useState('');
 
   const handleFilter = () => {
     // Pass the filter criteria to the parent component

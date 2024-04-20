@@ -5,7 +5,7 @@ const router = express.Router();
 //get all reservation: done
 router.get("/get",async(req,res)=>{
   try{
-      const {clubname,num_salle,date,starttime,endtime} = req.body;
+     
       const allReservations = await pool.query("SELECT * FROM reservation");
       res.json(allReservations.rows)
       
@@ -27,23 +27,15 @@ router.get("/gett",async(req,res)=>{
  //Make a reservation: done (si la salle est reservée à cette date , un message d'erreur s'affiche)
  router.post("/make",async(req,res)=>{
     try{
-      const {clubname,num_salle,date,starttime,endtime}=req.body;
-      const resultat=await pool.query('select * from reservation');
+      const {clubname,roomname,date,starttime,endtime}=req.body;
+      const resultat=await pool.query('select * from reservation where roomname=$1 AND date=$2 AND starttime=$3 AND endtime=$4',[roomname,date,starttime,endtime]); 
       if (resultat.rowCount === 0){
-        sqlquery='INSERT INTO reservation (clubname,num_salle,date,starttime,endtime) VALUES ($1,$2,$3,$4,$5)';
-        const result=await pool.query(sqlquery,[clubname,num_salle,date,starttime,endtime]);
+        sqlquery='INSERT INTO reservation (roomname,date,starttime,endtime,clubname) VALUES ($1,$2,$3,$4,$5)';
+        const result=await pool.query(sqlquery,[roomname,date,starttime,endtime,clubname]);
         res.status(200).send("reservation added successfully");
-      }else{
-      q1='select * from reservationdemande where num_salle=$1 and date=$2 and endtime > $3 and starttime < $4';
-      const rslt=await pool.query(q1,[num_salle,date,starttime,endtime]);
-      if (rslt.rowCount===0){
-        sqlquery='INSERT INTO reservationdemande (clubname,num_salle,date,starttime,endtime) VALUES ($1,$2,$3,$4,$5)';
-        const result=await pool.query(sqlquery,[clubname,num_salle,date,starttime,endtime]);
-        res.status(200).send("reservation added successfully");
-  
       }else {
         res.send("salle non disponible à cette date");
-      }}
+      }
     }catch(error){
       console.error("Error:",error);
       res.status(500).json({message:"Internal Server Error"});
@@ -62,7 +54,6 @@ router.delete("/cancel/:id",async(req,res)=>{
       console.error("Error",error);
       res.status(500).json({message:"Internal Server Error"});
     }
-  
   });
   
   //update reservation:à vérifier
