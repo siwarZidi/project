@@ -31,7 +31,6 @@ import Register from "layouts/pages/register";
 import routes from "routes";
 import Reservation from "layouts/pages/reservation";
 import Reserve from "layouts/pages/reserve";
-import Contact from "pages/LandingPages/Author/sections/Contact";
 import AdminReservation from "layouts/pages/AdminReservation";
 
 export default function App() {
