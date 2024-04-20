@@ -1,5 +1,5 @@
 import React, { useEffect, Fragment, useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -7,71 +7,72 @@ import Card from "@mui/material/Card";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-import MKSocialButton from "components/MKSocialButton";
+//import MKSocialButton from "components/MKSocialButton";
 import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import routes from "routes";
 import {Button, Modal, ModalHeader, ModalBody, FormGroup, Input, Label, FormText, NavLink} from "reactstrap";
-import './PopStyle.css';
+import "./PopStyle.css";
 
 const ListReservations = () => {
-    //update
-    const [showPopup, setShowPopup] = useState(false);
-    const [updateData, setUpdateData] = useState({
-        date: '',
-        startTime: '',
-        endTime: '',
-        roomName: ''
-    });
-    const [showUpdateForm, setShowUpdateForm] = useState(false);
-    // Open update form
-    const openUpdateForm = (reservation) => {
-      setShowUpdateForm(true);
-      setUpdateData(reservation);
-  }
+  //update
+  const [showPopup, setShowPopup] = useState(false);
+  const [updateData, setUpdateData] = useState({
+    date: "",
+    startTime: "",
+    endTime: "",
+    roomName: "",
+  });
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  // Open update form
+  const openUpdateForm = (reservation) => {
+    setShowUpdateForm(true);
+    setUpdateData(reservation);
+  };
 
   // Close update form
   const closeUpdateForm = () => {
-      setShowUpdateForm(false);
-  }
-  
+    setShowUpdateForm(false);
+  };
 
-    // Fonction pour gérer la soumission du formulaire de mise à jour
-    const handleSubmitUpdate = async () => {
-        try {
-            // Envoi de la requête PUT au backend avec les nouvelles données de réservation
-            await fetch(`http://localhost:5000/reservation/update/${updateData.reservation_id}`, {
-                method: 'PUT', // Utilisez la méthode PUT pour la mise à jour
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updateData)
-            });
-            // Fermer le popup après la mise à jour
-            closeUpdateForm();
-        } catch (error) {
-            console.error('Erreur lors de la mise à jour de la réservation:', error);
-        }
-    };
-    //filtrage 
-    const [date, setDate] = useState('');
-    const [Starttime, setStartTime] = useState('');
-    const [Endtime, setEndTime] = useState('');
-    const [name, setName] = useState('');
-    const [room, setRoom] = useState('');
+  // Fonction pour gérer la soumission du formulaire de mise à jour
+  const handleSubmitUpdate = async () => {
+    try {
+      // Envoi de la requête PUT au backend avec les nouvelles données de réservation
+      await fetch(`http://localhost:5000/reservation/update/${updateData.reservation_id}`, {
+        method: "PUT", // Utilisez la méthode PUT pour la mise à jour
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateData),
+      });
+      // Fermer le popup après la mise à jour
+      closeUpdateForm();
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour de la réservation:", error);
+    }
+  };
+  //filtrage
+  const [date, setDate] = useState("");
+  const [Starttime, setStartTime] = useState("");
+  const [Endtime, setEndTime] = useState("");
+  const [name, setName] = useState("");
+  const [room, setRoom] = useState("");
 
-    const handleFilter = () => {
-        // Pass the filter criteria to the parent component
-        onFilter({ date, time, name, room });
-    };
+  const handleFilter = () => {
+    // Pass the filter criteria to the parent component
+    onFilter({ date, time, name, room });
+  };
 
-    const [Reservations, setReservations] = useState([]);
-    const deleteReservation = async (id) => {
-        try {
-            const deleteReservation = await fetch(`http://localhost:5000/reservation/update/${id}`, { method: "DELETE" });
-            setReservations(Reservations.filter(Reservation => Reservation.reservation_id !== id));
-        } catch (err) {
+  const [Reservations, setReservations] = useState([]);
+  const deleteReservation = async (id) => {
+    try {
+      const deleteReservation = await fetch(`http://localhost:5000/reservation/update/${id}`, {
+        method: "DELETE",
+      });
+      setReservations(Reservations.filter(Reservation => Reservation.reservation_id !== id));
+      } catch (err) {
             console.error(err.message);
         }
     }
