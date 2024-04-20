@@ -1,29 +1,32 @@
-import React from "react";
-import routes from "routes";
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-import MKBox from "components/MKBox";
-import MKTypography from "components/MKTypography";
-import bgImage from "assets/images/bg-sign-in.jpeg";
-import Card from "@mui/material/Card";
+// @mui material components
+import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import FilterIcon from "@mui/icons-material/Filter";
+
+// Material Kit 2 React components
+import MKBox from "components/MKBox";
 import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
+import MKTypography from "components/MKTypography";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { FormGroup } from "react-bootstrap";
+import Popup from "components/PopUp/Popup";
+// Images
+import bgImage from "assets/images/insat.jpg";
+
 function Reserve() {
   const navigate = useNavigate();
   const [clubname, setclubname] = useState("");
-  const [num_salle, setclassname] = useState("");
+  const [num_salle, setclassnum] = useState("");
   const [date, setdate] = useState("");
   const [starttime, setStarttime] = useState("");
   const [endtime, setFinishtime] = useState("");
-
+  const [buttonPopup, setButtonPopup] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const body = { clubname, num_salle, date, starttime, endtime };
-      const response = await fetch("http://localhost:5000/reserve", {
+      const response = await fetch("http://localhost:5000/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -40,117 +43,207 @@ function Reserve() {
     }
   };
   return (
-    <>
-      <DefaultNavbar routes={routes} transparent light />
-      <MKBox
-        position="absolute"
-        top={0}
-        left={0}
-        zIndex={1}
-        width="100%"
-        minHeight="100vh"
-        sx={{
-          backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
-            `${linearGradient(
-              rgba(gradients.dark.main, 0.6),
-              rgba(gradients.dark.state, 0.6)
-            )}, url(${bgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      />
-      <MKBox px={1} width="100%" height="100vh" mx="auto" position="relative" zIndex={2}>
-        <Grid container spacing={3} justifyContent="center" alignItems="center" height="100%">
-          <Grid item xs={11} sm={9} md={5} lg={4} xl={3}>
-            <Card>
-              <MKBox
-                variant="gradient"
-                bgColor="error"
-                borderRadius="lg"
-                coloredShadow="info"
-                mx={2}
-                mt={-3}
-                p={2}
-                mb={1}
-                textAlign="center"
+    <MKBox component="section" py={{ xs: 0, lg: 6 }}>
+      <Container>
+        <Grid container item>
+          <MKBox
+            width="100%"
+            bgColor="white"
+            borderRadius="xl"
+            shadow="xl"
+            mb={6}
+            sx={{ overflow: "hidden" }}
+          >
+            <Grid container spacing={2}>
+              <Grid
+                item
+                xs={12}
+                lg={5}
+                position="relative"
+                px={0}
+                sx={{
+                  backgroundImage: ({
+                    palette: { gradients },
+                    functions: { rgba, linearGradient },
+                  }) =>
+                    `${linearGradient(
+                      rgba(gradients.dark.main, 0.8),
+                      rgba(gradients.dark.state, 0.8)
+                    )}, url(${bgImage})`,
+                  backgroundSize: "cover",
+                }}
               >
-                <MKTypography variant="h4" fontWeight="medium" color="white" mt={2}>
-                  Make your reservation
-                </MKTypography>
-                <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}></Grid>
-              </MKBox>
-              <MKBox pt={4} pb={3} px={3}>
-                <MKBox component="form" role="form" onsubmit={handleSubmit}>
-                  <FormGroup>
-                    <MKBox mb={2}>
-                      <MKInput
-                        pb={2}
-                        type="text"
-                        label="Club's Name"
-                        fullWidth
-                        value={clubname}
-                        onChange={(e) => setclubname(e.target.value)}
-                      />
-                    </MKBox>
-                  </FormGroup>
-                  <FormGroup>
-                    <MKBox mb={2}>
-                      <MKInput
-                        type="text"
-                        label="class Name"
-                        fullWidth
-                        value={num_salle}
-                        onChange={(e) => setclassname(e.target.value)}
-                      />
-                    </MKBox>
-                  </FormGroup>
-                  <FormGroup>
-                    <MKBox mb={2}>
-                      <MKInput
-                        type="date"
-                        fullWidth
-                        value={date}
-                        onChange={(e) => setdate(e.target.value)}
-                      />
-                    </MKBox>
-                  </FormGroup>
-                  <FormGroup>
-                    <MKBox mb={2}>
-                      <MKTypography variant="h6" mb={1}>
-                        Starting from :
-                      </MKTypography>
-                      <MKInput
-                        type="time"
-                        fullWidth
-                        value={starttime}
-                        onChange={(e) => setStarttime(e.target.value)}
-                      />
-                    </MKBox>
-                  </FormGroup>
-                  <FormGroup>
-                    <MKTypography variant="h6" mb={1}>
-                      Finishing at :
+                <MKBox
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  width="100%"
+                  height="100%"
+                >
+                  <MKBox py={6} pr={6} pl={{ xs: 6, sm: 12 }} my="auto">
+                    <MKTypography variant="h3" color="white" mb={1}>
+                      Make your reservation
                     </MKTypography>
-                    <MKBox mb={2}>
-                      <MKInput
-                        type="time"
-                        fullWidth
-                        value={endtime}
-                        onChange={(e) => setFinishtime(e.target.value)}
-                      />
+                    <MKTypography variant="body2" color="white" opacity={0.8} mb={3}>
+                      Fill up the form and the administration will get back to you within 24 hours.
+                    </MKTypography>
+                    <MKBox display="flex" p={1}>
+                      <MKTypography variant="button" color="white">
+                        <i className="fas fa-phone" />
+                      </MKTypography>
+                      <MKTypography
+                        component="span"
+                        variant="button"
+                        color="white"
+                        opacity={0.8}
+                        ml={2}
+                        fontWeight="regular"
+                      >
+                        (+216) ***********
+                      </MKTypography>
                     </MKBox>
-                  </FormGroup>
-                  <MKButton type="submit" variant="gradient" color="error" fullWidth>
-                    Check
-                  </MKButton>
+                    <MKBox display="flex" color="white" p={1}>
+                      <MKTypography variant="button" color="white">
+                        <i className="fas fa-envelope" />
+                      </MKTypography>
+                      <MKTypography
+                        component="span"
+                        variant="button"
+                        color="white"
+                        opacity={0.8}
+                        ml={2}
+                        fontWeight="regular"
+                      >
+                        ahmed.trigui@insat.ucar.tn
+                      </MKTypography>
+                    </MKBox>
+                    <MKBox display="flex" color="white" p={1}>
+                      <MKTypography variant="button" color="white">
+                        <i className="fas fa-map-marker-alt" />
+                      </MKTypography>
+                      <MKTypography
+                        component="span"
+                        variant="button"
+                        color="white"
+                        opacity={0.8}
+                        ml={2}
+                        fontWeight="regular"
+                      >
+                        Insat,Tunis
+                      </MKTypography>
+                    </MKBox>
+                    <MKBox mt={3}>
+                      <MKButton variant="text" color="white" size="large" iconOnly>
+                        <i className="fab fa-facebook" style={{ fontSize: "1.25rem" }} />
+                      </MKButton>
+                      <MKButton variant="text" color="white" size="large" iconOnly>
+                        <i className="fab fa-twitter" style={{ fontSize: "1.25rem" }} />
+                      </MKButton>
+                      <MKButton variant="text" color="white" size="large" iconOnly>
+                        <i className="fab fa-dribbble" style={{ fontSize: "1.25rem" }} />
+                      </MKButton>
+                      <MKButton variant="text" color="white" size="large" iconOnly>
+                        <i className="fab fa-instagram" style={{ fontSize: "1.25rem" }} />
+                      </MKButton>
+                    </MKBox>
+                  </MKBox>
                 </MKBox>
-              </MKBox>
-            </Card>
-          </Grid>
+              </Grid>
+              <Grid item xs={12} lg={7}>
+                <MKBox component="form" p={2} role="form" onsubmit={handleSubmit}>
+                  <MKBox px={3} py={{ xs: 2, sm: 6 }}>
+                    <MKTypography variant="h2" mb={1}>
+                      Fill out the form
+                    </MKTypography>
+                  </MKBox>
+                  <MKBox pt={0.5} pb={3} px={3}>
+                    <Grid container>
+                      <Grid item xs={12} pr={1} mb={3}>
+                        <MKInput
+                          pb={2}
+                          type="text"
+                          label="Club's Name"
+                          fullWidth
+                          value={clubname}
+                          onChange={(e) => setclubname(e.target.value)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} pr={1} mb={3}>
+                        <MKInput
+                          type="text"
+                          label="Class Number"
+                          fullWidth
+                          value={num_salle}
+                          onChange={(e) => setclassnum(e.target.value)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} pr={1} mb={3}>
+                        <MKInput
+                          type="date"
+                          fullWidth
+                          value={date}
+                          onChange={(e) => setdate(e.target.value)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} pr={1} mb={1}>
+                        <MKBox mb={2}>
+                          <MKTypography variant="h6" mb={1}>
+                            Starting from :
+                          </MKTypography>
+                          <MKInput
+                            type="time"
+                            fullWidth
+                            value={starttime}
+                            onChange={(e) => setStarttime(e.target.value)}
+                          />
+                        </MKBox>
+                      </Grid>
+                      <Grid item xs={12} pr={1} mb={3}>
+                        <MKTypography variant="h6" mb={1}>
+                          Finishing at :
+                        </MKTypography>
+                        <MKBox mb={2}>
+                          <MKInput
+                            type="time"
+                            fullWidth
+                            value={endtime}
+                            onChange={(e) => setFinishtime(e.target.value)}
+                          />
+                        </MKBox>
+                      </Grid>
+                    </Grid>
+                    <Grid
+                      container
+                      item
+                      xs={12}
+                      md={6}
+                      justifyContent="flex-end"
+                      textAlign="right"
+                      ml="auto"
+                    >
+                      <MKButton
+                        variant="gradient"
+                        color="error"
+                        onClick={() => setButtonPopup(true)}
+                        style={{ marginRight: "10px" }}
+                        startIcon={<FilterIcon />}
+                      >
+                        Filtrer
+                      </MKButton>
+                      <MKButton variant="gradient" color="error">
+                        Send Request
+                      </MKButton>
+                    </Grid>
+                  </MKBox>
+                </MKBox>
+              </Grid>
+            </Grid>
+          </MKBox>
         </Grid>
-      </MKBox>
-    </>
+      </Container>
+      <Popup trigger={buttonPopup} setTrigger={setButtonPopup}></Popup>
+    </MKBox>
   );
 }
+
 export default Reserve;
