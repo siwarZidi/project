@@ -1,20 +1,26 @@
 const expressAsyncHandler = require('express-async-handler');
-const pool = require("../db");
+const salle=require('../models/salle')
 
-const salles = require('../models/salle');
-
-
-const addsalles = expressAsyncHandler(async(req,res)=>{
+const getsalles= expressAsyncHandler(async(req,res)=>{
+    try {
+    
+      const allSalles = await salle.find();
+      res.json(allSalles);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: 'Une erreur est survenue lors de la récupération des réservations.' });
+    }
+  });
+const addsalle = expressAsyncHandler(async(req,res)=>{
     try{
-        const {num_salle, nbre_place } = req.body;
-        query='SELECT * FROM salles WHERE num_salle=$1';
-        const rslt=await pool.query(query,[num_salle]);
-        if (rslt.rowCount===0){
-          const sqlquery='INSERT INTO salles (num_salle, nbre_place) VALUES ($1,$2) RETURNING *';
-          const result = await pool.query(sqlquery,[num_salle, nbre_place]);
-          res.json(result.rows[0]);
-      }else {
-          res.send("la salle existe deja dans la base");
+        const {num}=req.body;
+       const existingSalle=await salle.findOne({num_salle:num});
+       if(existingSalle){
+        res.status(400).send("la salle existe deja dans la base");
+       }
+      else {
+       const newSalle=salle.create(req.body);
+       res.status(200).send('salle ajoutée');
       }
     }catch (err){
         console.error(err.message);
@@ -22,47 +28,38 @@ const addsalles = expressAsyncHandler(async(req,res)=>{
     }
 });
 
-const deletesalles=expressAsyncHandler(async(req,res)=>{
-    id= parseInt(req.params.id,10);
-    sqlquery='DELETE FROM salles WHERE num_salle=$1';
-    try{
-        const result= await pool.query(sqlquery,[id]);
-        if (result.rowCount === 1) {  //rowcount: nbre of rows affected by the query.
-      res.status(200).send({ success: true });
-    } else {
-      res.status(404).send({ success: false, error: 'Salle not found.' });
-    } 
-    }catch (error){
-        console.log(error);
-        res.status(500).send({success:false,error:'delete failed. '});
+const deletesalle=expressAsyncHandler(async(req,res)=>{
+      try{
+    num=req.params.num;
+   const deletedSalle=await salle.findOneAndDelete({num_salle:num});
+    if (!deletedSalle){
+      res.send("salle n'existe pas deja");
+    }else {
+      res.send("deleted successfully");
+    }}catch(err){
+      console.error("Error",err);
+      res.status(500).json({message:"Internal Server Error"});
+    }    
+});
+
+
+
+const updatesalles = expressAsyncHandler(async(req,res)=>{
+    try { 
+        const num = req.params.num;
+        const newSalle= req.body;
+        const currentSalle = await salle.findOneAndUpdate({num_salle:num},newSalle);
+       if(currentSalle){
+        res.status(200).send({ result: "Salle found", msg: "Updated successfully" });
+       } 
+       else{
+        res.status(404).send('salle not found');
+       }
+  }
+    catch (error) {
+        console.error('Erreur lors de la mise à jour :', error);
+        res.status(500).send('Update failed');
     }
 });
 
-const getsalles= expressAsyncHandler(async(req,res)=>{
-    const sqlquery='SELECT * FROM salles';
-    try{
-      const data = await pool.query(sqlquery);
-      res.status(200).json(data.rows);
-  }catch (err){
-      console.error(err.message);
-}
-});
-
-const updatesalles = expressAsyncHandler(async(req,res)=>{
-    try{
-        num_salle=req.params.id*1;
-        const {nbre_place} = req.body; 
-        sqlquery='UPDATE salles SET nbre_place=$1 where num_salle=$2';
-        const result= await pool.query(sqlquery,[nbre_place,num_salle]);
-        if(result.rowCount === 1){
-            res.status(200).send({result:"salle found",msg:"updated successfully"});
-        }else{
-            res.status(404).send('salle not found');
-        }
-        }catch(error){
-            console.error(error);
-            res.status(500).send('update failed');
-        }
-});
-
-module.exports= {deletesalles,getsalles,addsalles,updatesalles}
+module.exports= {deletesalle,getsalles,addsalle,updatesalles}

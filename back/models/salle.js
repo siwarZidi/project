@@ -1,24 +1,10 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class salle extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  }
-  salle.init({
-    num_salle: DataTypes.INTEGER,
-    nbre_place: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'salle',
+  const mongoose=require('mongoose');
+  const salleSchema=new mongoose.Schema({
+    salle_id: { type: Number, auto: true },
+    num_salle: { type:Number, auto: true },
+      nbre_place: Number
   });
-  return salle;
-};
+const salle=mongoose.model('Salle',salleSchema);
+module.exports=salle;
+
+
