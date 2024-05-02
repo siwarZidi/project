@@ -1,15 +1,15 @@
-const express = require('express');
-const pool = require('../db')
-const router = express.Router();
+// const express = require('express');
 
-//login as admin:
+// const router = express.Router();
 
-//login avec reconnaissace faciale:
+// //login as admin:
+
+// //login avec reconnaissace faciale:
 
 
-//MANAGE RESERVATIONS:
+// //MANAGE RESERVATIONS:
 
-//access the same urls as the user for the reservation crud.
+// //access the same urls as the user for the reservation crud.
 
   
-module.exports = router; 
+// module.exports = router; 
