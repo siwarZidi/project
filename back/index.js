@@ -17,6 +17,12 @@ const reservationRouter =require("./routes/reservation");
  const clubRouter =require("./routes/club");
  app.use("/club",clubRouter);
 
+ const registerRouter= require("./routes/register");
+ app.use("/registration",registerRouter);
+ 
+/*const loginRouter= require("./routes/login");
+app.use("/login",loginRouter);
+*/
 app.listen(5000,()=>{
     console.log("server runinig on port 5000");
 });
