@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const ClubSchema=new mongoose.Schema({
   club_id: { type:Number, auto: true },
   name:String,
@@ -16,6 +17,7 @@ const ClubSchema=new mongoose.Schema({
   },
 });
 const club=mongoose.model("Club",ClubSchema);
+ClubSchema.plugin(AutoIncrement, { inc_field: 'num_club' });
 module.exports =club;
 
 
