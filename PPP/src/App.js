@@ -18,6 +18,9 @@ import routes from "routes";
 import Reservation from "layouts/pages/reservation";
 import Reserve from "layouts/pages/reserve";
 import AdminReservation from "layouts/pages/AdminReservation";
+import JCI from "layouts/pages/clubEvent/JCI";
+import ACM from "layouts/pages/clubEvent/ACM"
+import JEI from "layouts/pages/clubEvent/JEI"
 
 export default function App() {
   const { pathname } = useLocation();
@@ -48,6 +51,9 @@ export default function App() {
         <Route path="/reservation" element={<AdminReservation />} />
         <Route path="/reserve" element={<Reserve />} />
         <Route path="*" element={<Navigate to="/presentation" />} />
+        <Route path="/JCI" element={<JCI/>} />
+        <Route path="/ACM" element={<ACM/>} />
+        <Route path="/JEI" element={<JEI/>} />
       </Routes>
     </ThemeProvider>
   );

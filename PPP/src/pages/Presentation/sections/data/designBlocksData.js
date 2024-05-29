@@ -29,40 +29,47 @@ export default [
       {
         image: img_acm,
         name: "ACM",
-        route: "/sections/page-sections/page-headers",
+        route: "/ACM",
       },
       {
         image: img_ieee,
         name: "IEEE",
-        route: "/sections/page-sections/features",
+        route: "/IEEE",
       },
       {
         image: img_jei,
         name: "JEI",
+        route: "/JEI",
       },
       {
         image: img_aero,
         name: "Aerobotix",
+        route: "/Aerobotix",
       },
       {
         image: img_jci,
         name: "JCI",
+        route: "/JCI",
       },
       {
         image: img_and,
         name: "Android",
+        route: "/Android",
       },
       {
         image: img_sec,
         name: "Securinets",
+        route: "/Securinets",
       },
       {
         image: img_tim,
         name: "Timun",
+        route: "/Timun",
       },
       {
         image: img_chess,
         name: "Chess",
+        route: "/Chess",
       },
     ],
   },
