@@ -80,9 +80,8 @@ const updatereservation=expressAsyncHandler(async(req,res)=>{
 
 const findResByClub=expressAsyncHandler(async(req,res)=>{
     try{
-      const num=req.params.num;
-      const club=await Club.findOne({num_club:num})
-      const reservations=await Reservation.find({clubname:club.clubname,statu:Stat.ACCEPTED})
+      const name=req.params.name;
+      const reservations=await Reservation.find({clubname:name})
       res.json(reservations);
     }
     catch(err){

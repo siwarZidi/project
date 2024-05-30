@@ -16,6 +16,10 @@ const ClubSchema=new mongoose.Schema({
         required: true,
   },
 });
+ClubSchema.pre('save', function (next) {
+      this.name = this.name.toUpperCase();
+      next();
+    });
 const club=mongoose.model("Club",ClubSchema);
 ClubSchema.plugin(AutoIncrement, { inc_field: 'num_club' });
 module.exports =club;

@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const Stat=require('./stat');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 const reservationSchema=new mongoose.Schema({
   reservation_id: { type: Number, auto: true },
@@ -8,7 +9,7 @@ const reservationSchema=new mongoose.Schema({
     date: Date,
     starttime: Date,
     endtime:Date,
-    trainer:string,
+    trainer:String,
     statu:{type:Stat,default:Stat.REJECTED}
 });
 reservationSchema.plugin(AutoIncrement, { inc_field: 'num_reservation' });

@@ -5,7 +5,7 @@ const  mongoose=require('mongoose')
 
 app.use(cors());
 app.use(express.json());
-mongoose.connect('mongodb://localhost:27017/ppp')
+mongoose.connect('mongodb+srv://jihedbenamara:jihed10042002@cluster0.g2wtx8e.mongodb.net/PPP')
 
 // //manage all the urls that begin with /reservation with the /routes/reservation file:
 const reservationRouter =require("./routes/reservation");
