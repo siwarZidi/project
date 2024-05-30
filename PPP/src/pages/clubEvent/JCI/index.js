@@ -202,7 +202,9 @@ function JciInBasic() {
                                                     <th scope="col">Date</th>
                                                     <th scope="col">Start time </th>
                                                     <th scope="col">End time </th>
+                                                    <th scope="col">Class </th>
                                                     <th scope="col">Trainer Name </th>
+                                                    <th scope="col">Description </th>
                                                 </tr>
                                             </thead>
                               

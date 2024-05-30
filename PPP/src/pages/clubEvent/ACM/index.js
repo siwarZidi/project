@@ -37,6 +37,24 @@ const photos = [
 ];
 
 function AcmInBasic() {
+
+  const [Reservations, setReservations] = useState([]);
+  const getReservations = async () => {
+    try {
+        const response = await fetch("http://localhost:5000/reservation/get")
+        const jsondata = await response.json();
+        setReservations(jsondata);
+
+    } catch (err) {
+        console.error(err.message);
+
+    }
+}
+useEffect(() => {
+    getReservations();
+}, []);
+
+
   return (
     <>
      
@@ -199,9 +217,25 @@ function AcmInBasic() {
                                                     <th scope="col">Date</th>
                                                     <th scope="col">Start time </th>
                                                     <th scope="col">End time </th>
+                                                    <th scope="col">Class </th>
                                                     <th scope="col">Trainer Name </th>
+                                                    <th scope="col">Description </th>
                                                 </tr>
                                             </thead>
+                                            {Reservations.map(Reservation => (
+                                                <tr key={Reservation.Reservation_id}>
+                                                    <td>{Reservation.roomname}</td>
+                                                    <td>{Reservation.date.split('T')[0]}</td>
+                                                    <td>{Reservation.starttime}</td>
+                                                    <td>{Reservation.endtime}</td>
+                                                    <td>{Reservation.clubname}</td>
+                                                    <td><button className="btn btn-danger" onClick={() => deleteReservation(Reservation.reservation_id)}>Delete</button></td>
+                                                    <td>
+                                                        <button className="btn btn-pastel" onClick={() => openUpdateForm(Reservation)} >UPDATE</button>
+                                                    </td>
+
+                                                </tr>
+                                            ))}
                               
                  </table>
               </Grid>
