@@ -2,10 +2,18 @@ const express = require('express');
 const app = express();
 const cors = require("cors");
 const  mongoose=require('mongoose')
+const {endpoint} = require('./config');
+
+//const dotenv = require('dotenv');
+//dotenv.config();
+mongoose.connect(endpoint).then(()=>{
+    console.log("Database connected")
+})
 
 app.use(cors());
 app.use(express.json());
-mongoose.connect('mongodb://localhost:27017/ppp')
+
+//mongoose.connect('mongodb://localhost:27017/ppp')
 
 // //manage all the urls that begin with /reservation with the /routes/reservation file:
 const reservationRouter =require("./routes/reservation");

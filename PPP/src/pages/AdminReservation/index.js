@@ -93,6 +93,21 @@ const ListReservations = () => {
         getReservations();
     }, []);
 
+    const handleAccept = async (reservation) => {
+        try {
+          await fetch(`http://localhost:5000/reservation/accept`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ reservationId: reservation.reservation_id, clubEmail: reservation.clubemail }),
+          });
+          alert("Acceptance email sent!");
+        } catch (error) {
+          console.error('Error sending acceptance email:', error);
+        }
+      };
+
     return (
         <>
             <Container >
@@ -173,7 +188,7 @@ const ListReservations = () => {
                                         mb={3}
                                         textAlign="center"
                                     >
-                                        <table class="table table-striped mt-5">
+                                        <table className="table table-striped mt-5">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">class Name</th>
@@ -193,6 +208,9 @@ const ListReservations = () => {
                                                     <td><button className="btn btn-danger" onClick={() => deleteReservation(Reservation.reservation_id)}>Delete</button></td>
                                                     <td>
                                                         <button className="btn btn-pastel" onClick={() => openUpdateForm(Reservation)} >UPDATE</button>
+                                                    </td>
+                                                    <td>
+                                                        <button className="btn btn-info" onClick={() => handleAccept(Reservation)}>Accept</button>
                                                     </td>
 
                                                 </tr>
