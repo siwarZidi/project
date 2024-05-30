@@ -162,14 +162,6 @@ const ListReservations = () => {
                                         onChange={(e) => setName(e.target.value)}
                                     />
                                     <MKInput list="browsers" />
-                                    <datalist id="browsers">
-                                        <option value="Edge" />
-                                        <option value="Firefox" />
-                                        <option value="Chrome" />
-                                        <option value="Opera" />
-                                        <option value="Safari" />
-                                    </datalist>
-
 
                                     <MKBox mt={4} mb={1}>
                                         <MKButton type="submit" variant="gradient" color="error" onClick={handleFilter}>Apply Filter</MKButton>
