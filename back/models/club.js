@@ -3,7 +3,7 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const ClubSchema=new mongoose.Schema({
   club_id: { type:Number, auto: true },
   name:String,
-  clubNum:Number,   
+  num_club:{ type:Number, auto: true },   
   year:Number,
   email: {
         type: String,
@@ -16,6 +16,10 @@ const ClubSchema=new mongoose.Schema({
         required: true,
   },
 });
+ClubSchema.pre('save', function (next) {
+      this.name = this.name.toUpperCase();
+      next();
+    });
 const club=mongoose.model("Club",ClubSchema);
 ClubSchema.plugin(AutoIncrement, { inc_field: 'num_club' });
 module.exports =club;
