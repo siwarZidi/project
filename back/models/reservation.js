@@ -5,11 +5,11 @@ const reservationSchema=new mongoose.Schema({
     clubname:String,
     num_salle: Number,
     date: Date,
-    starttime: Date,
-    endtime:Date,
+    starttime: String,
+    endtime:String,
     stat:Boolean
 });
-const reservation=mongoose.model("Reservation",reservationSchema);
-module.exports =reservation;
+const Reservation=mongoose.model("Reservation",reservationSchema);
+module.exports =Reservation;
 
 

@@ -202,7 +202,7 @@ const ListReservations = () => {
                                                         <button className="btn btn-pastel" onClick={() => openUpdateForm(Reservation)} >UPDATE</button>
                                                     </td>
                                                     <td>
-                                                        <button className="btn btn-info" onClick={() => handleAccept(Reservation)}>Accept</button>
+                                                        <button className="btn btn-danger" onClick={() => handleAccept(Reservation)}>Accept</button>
                                                     </td>
 
                                                 </tr>

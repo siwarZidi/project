@@ -26,7 +26,8 @@ function Reserve() {
     e.preventDefault();
     try {
       const body = { clubname, num_salle, date, starttime, endtime };
-      const response = await fetch("http://localhost:5000/contact", {
+      console.log(body);
+      const response = await fetch("http://localhost:5000/reservation/post", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -150,7 +151,7 @@ function Reserve() {
                 </MKBox>
               </Grid>
               <Grid item xs={12} lg={7}>
-                <MKBox component="form" p={2} role="form" onsubmit={handleSubmit}>
+                <MKBox component="form" p={2} role="form" onSubmit={handleSubmit}>
                   <MKBox px={3} py={{ xs: 2, sm: 6 }}>
                     <MKTypography variant="h2" mb={1}>
                       Fill out the form
@@ -230,7 +231,7 @@ function Reserve() {
                       >
                         Filtrer
                       </MKButton>
-                      <MKButton variant="gradient" color="error">
+                      <MKButton variant="gradient" color="error" onClick={handleSubmit}>
                         Send Request
                       </MKButton>
                     </Grid>

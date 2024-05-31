@@ -7,8 +7,11 @@ const Reservation = require('../models/reservation');
 
 const getreservation= expressAsyncHandler(async(req,res)=>{
   try {
-    const allReservations = await Reservation.find();
-    res.json(allReservations);
+    const allReservations =  await Reservation.find()
+     
+    console.log(allReservations)
+    
+    return res.json( allReservations);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: 'Une erreur est survenue lors de la récupération des réservations.' });
