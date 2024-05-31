@@ -4,6 +4,8 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const reservationSchema=new mongoose.Schema({
   reservation_id: { type: Number, auto: true },
     num_reservation:{type:Number,unique:true,auto:true},
+    workShopName:String,
+    description:String,
     clubname:String,
     num_salle: Number,
     date: Date,
