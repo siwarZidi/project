@@ -30,7 +30,20 @@ function Reserve() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const body = { clubname, num_salle, date, starttime, endtime,trainer,workShopName,description,avatar };
+      const startDateTime = new Date(`${date}T${starttime}:00.000Z`).toISOString();
+      const endDateTime = new Date(`${date}T${endtime}:00.000Z`).toISOString();
+      
+      const body = { 
+        clubname, 
+        num_salle, 
+        date, 
+        starttime: startDateTime, 
+        endtime: endDateTime,
+        trainer,
+        workShopName,
+        description,
+        avatar
+      };
       const response = await fetch("http://localhost:5000/reservation/post", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -160,7 +173,7 @@ function Reserve() {
                 </MKBox>
               </Grid>
               <Grid item xs={12} lg={7}>
-                <MKBox component="form" p={2} role="form" onSubmit={handleSubmit}>
+                <MKBox component="form" p={2} role="form" onsubmit={handleSubmit}>
                   <MKBox px={3} py={{ xs: 2, sm: 6 }}>
                     <MKTypography variant="h2" mb={1}>
                       Fill out the form

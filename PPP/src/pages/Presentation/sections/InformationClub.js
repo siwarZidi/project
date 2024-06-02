@@ -8,6 +8,7 @@ import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
 import ExampleCard from "../components/ExampleCard";
 import Card from "@mui/material/Card";
+import { Button, Modal, ModalHeader, ModalBody, FormGroup, Input, Label } from "reactstrap";
 
 // Images
 import img_acm from "assets/images/clubs-logos/ACM-logo.jpg";
@@ -20,8 +21,36 @@ function InformationClub() {
   const [error, setError] = useState(null);
   const [reservations, setReservations] = useState([]);
   const clubName = "ACM";  
+  const [updateData, setUpdateData] = useState({
+    date: "",
+    workShopName: "",
+    startTime: "",
+    endTime: "",
+    num_salle: "",
+    trainer: "",
+    description: "",
+  });
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const closeUpdateForm = () => {
+    setShowUpdateForm(false);
+  };
+  const handleSubmitUpdate = async () => {
+    try {
+      await fetch(`http://localhost:5000/reservation/update/${updateData.num_reservation}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateData),
+      });
+      closeUpdateForm();
+      window.location = "/Club/ACM";
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour de la réservation:", error);
+    }
+  };
   const navigate = useNavigate();
-
+  console.log(reservations);
   useEffect(() => {
     const fetchClubData = async () => {
       try {
@@ -36,13 +65,17 @@ function InformationClub() {
     };
     fetchClubData();
   }, [clubName]);
-
+  const openUpdateForm = (reservation) => {
+    setShowUpdateForm(true);
+    setUpdateData(reservation);
+  };
+  
   const deleteReservation = async (id) => {
     try {
       await fetch(`http://localhost:5000/reservation/delete/${id}`, {
         method: "DELETE",
       });
-      setReservations(reservations.filter(reservation => reservation.reservation_id !== id));
+      setReservations(reservations.filter((reservation) => reservation.num_reservation !== id));
     } catch (err) {
       console.error(err.message);
     }
@@ -64,6 +97,13 @@ function InformationClub() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading club data: {error.message}</p>;
+
+  const formatTime = (isoDate) => {
+    if (!isoDate) return '';
+    const timePart = isoDate.split('T')[1]; // Extraire la partie temporelle
+    const [hours, minutes] = timePart.split(':'); // Séparer les heures et les minutes
+    return `${hours}:${minutes}`;
+  };
 
   return (
     <MKBox component="section" py={6} my={6}>
@@ -106,6 +146,7 @@ function InformationClub() {
                   <thead>
                     <tr>
                       <th scope="col">Class Number</th>
+                      <th scope="col">Workshop Name</th>
                       <th scope="col">Date</th>
                       <th scope="col">Start time</th>
                       <th scope="col">End time</th>
@@ -116,12 +157,13 @@ function InformationClub() {
                     {reservations.map(reservation => (
                       <tr key={reservation.reservation_id}>
                         <td>{reservation.num_salle}</td>
+                        <td>{reservation.workShopName}</td>
                         <td>{reservation.date.split('T')[0]}</td>
-                        <td>{reservation.starttime}</td>
-                        <td>{reservation.endtime}</td>
+                        <td>{formatTime(reservation.starttime)}</td>
+                        <td>{formatTime(reservation.endtime)}</td>
                         <td>{reservation.statu}</td>
                         <td>
-                          <button className="btn btn-danger" onClick={() => deleteReservation(reservation.reservation_id)}>
+                          <button className="btn btn-danger" onClick={() => deleteReservation(reservation.num_reservation)}>
                             Delete
                           </button>
                         </td>
@@ -138,6 +180,41 @@ function InformationClub() {
             </MKBox>
           </Card>
         </Grid>
+        <Modal isOpen={showUpdateForm} toggle={closeUpdateForm}>
+        <ModalHeader toggle={closeUpdateForm}>Modifier la réservation</ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <Label for="date">Workshop Name</Label>
+            <Input type="date" name="date" id="date" value={updateData.workShopName} onChange={(e) => setUpdateData({ ...updateData, date: e.target.value })} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="date">Date</Label>
+            <Input type="date" name="date" id="date" value={updateData.date} onChange={(e) => setUpdateData({ ...updateData, date: e.target.value })} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="startTime">Start Time</Label>
+            <Input type="time" name="startTime" id="startTime" value={updateData.startTime} onChange={(e) => setUpdateData({ ...updateData, startTime: e.target.value })} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="endTime">End Time</Label>
+            <Input type="time" name="endTime" id="endTime" value={updateData.endTime} onChange={(e) => setUpdateData({ ...updateData, endTime: e.target.value })} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="endTime">Trainer</Label>
+            <Input type="time" name="endTime" id="endTime" value={updateData.trainer} onChange={(e) => setUpdateData({ ...updateData, endTime: e.target.value })} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="endTime">Description</Label>
+            <Input type="time" name="endTime" id="endTime" value={updateData.description} onChange={(e) => setUpdateData({ ...updateData, endTime: e.target.value })} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="num_salle">Class Number</Label>
+            <Input type="text" name="num_salle" id="num_salle" value={updateData.num_salle} onChange={(e) => setUpdateData({ ...updateData, num_salle: e.target.value })} />
+          </FormGroup>
+          <Button color="primary" onClick={handleSubmitUpdate}>SAVE</Button>{' '}
+          <Button color="secondary" onClick={closeUpdateForm}>CANCEL</Button>
+        </ModalBody>
+      </Modal>
       </Container>
     </MKBox>
   );

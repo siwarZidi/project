@@ -30,6 +30,7 @@ const makereservation = expressAsyncHandler(async (req, res) => {
         trainer: trainer,
         workShopName: workShopName,
         description: description,
+        statu : "pending",
           date: date,
           $or: [
               { $and: [{ starttime: { $lte: starttime } }, { endtime: { $gte: starttime } }] },
