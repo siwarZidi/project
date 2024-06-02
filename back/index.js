@@ -13,7 +13,7 @@ mongoose.connect(endpoint).then(()=>{
 //sessions:
 const session=require('express-session')
 const cookieParser =require('cookie-parser');
-const sessionSecret = process.env.SESSION_SECRET || 'Secret_session_key';
+const sessionSecret =  'Secret_session_key';
 
 const sessionConfig = {
     secret: sessionSecret,
@@ -49,8 +49,8 @@ app.use(express.json());
 const loginRouter= require("./routes/login");
 app.use("/",loginRouter);
 
-const filtrageRouter=require("./routes/filtrage");
-app.use("/",filtrageRouter);
+/*const filtrageRouter=require("./routes/filtrage");
+app.use("/",filtrageRouter);*/
 
 
 

@@ -21,11 +21,15 @@ const getreservation= expressAsyncHandler(async(req,res)=>{
 
 const makereservation = expressAsyncHandler(async (req, res) => {
   try {
-      const { num_salle, date, starttime, endtime } = req.body;
+      const { clubname, num_salle, date, starttime, endtime, trainer, workShopName, description } = req.body;
 
       // Vérifier si la salle est disponible pour la date et l'heure spécifiées
       const existingReservation = await Reservation.findOne({
-          num_salle: num_salle,
+        clubname: clubname,  
+        num_salle: num_salle,
+        trainer: trainer,
+        workShopName: workShopName,
+        description: description,
           date: date,
           $or: [
               { $and: [{ starttime: { $lte: starttime } }, { endtime: { $gte: starttime } }] },

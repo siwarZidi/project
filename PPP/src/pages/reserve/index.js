@@ -31,11 +31,12 @@ function Reserve() {
     e.preventDefault();
     try {
       const body = { clubname, num_salle, date, starttime, endtime,trainer,workShopName,description,avatar };
-      const response = await fetch("http://localhost:5000/contact", {
+      const response = await fetch("http://localhost:5000/reservation/post", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+      console.log(response);
       if (response.ok) {
         console.log("Reservation successful!");
         navigate("/presentation");

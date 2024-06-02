@@ -8,25 +8,26 @@ import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
 import ExampleCard from "../components/ExampleCard";
 import Card from "@mui/material/Card";
+
 // Images
 import img_acm from "assets/images/clubs-logos/ACM-logo.jpg";
-import { useEffect, useState , } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function InformationCLub() {
+function InformationClub() {
   const [clubData, setClubData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [reservations, setReservations] = useState([]);
-  const clubNum = 1;
+  const clubName = "ACM";  
   const navigate = useNavigate();
 
-  // Fetch club data
   useEffect(() => {
     const fetchClubData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/club/getClub/${clubNum}`);
-        setClubData(response.data);
+        const response = await fetch(`http://localhost:5000/club/getByName/${clubName}`);
+        const data = await response.json();
+        setClubData(data);
         setLoading(false);
       } catch (err) {
         setError(err);
@@ -34,33 +35,32 @@ function InformationCLub() {
       }
     };
     fetchClubData();
-  }, [clubNum]);
-  
+  }, [clubName]);
+
   const deleteReservation = async (id) => {
     try {
-      const deleteReservation = await fetch(`http://localhost:5000/reservation/update/${id}`, {
+      await fetch(`http://localhost:5000/reservation/delete/${id}`, {
         method: "DELETE",
       });
-      setReservations(reservations.filter(Reservation => Reservation.reservation_id !== id));
-      } catch (err) {
-            console.error(err.message);
-        }
+      setReservations(reservations.filter(reservation => reservation.reservation_id !== id));
+    } catch (err) {
+      console.error(err.message);
     }
+  };
 
-    const getReservations = async () => {
-        try {
-            const response = await fetch("http://localhost:5000/reservation/getByClub/ACM")
-            const jsondata = await response.json();
-            setReservations(jsondata);
-
-        } catch (err) {
-            console.error(err.message);
-
-        }
+  const getReservations = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/reservation/getByClub/${clubName}`);
+      const jsondata = await response.json();
+      setReservations(jsondata);
+    } catch (err) {
+      console.error(err.message);
     }
-    useEffect(() => {
-        getReservations();
-    }, []);
+  };
+
+  useEffect(() => {
+    getReservations();
+  }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading club data: {error.message}</p>;
@@ -75,16 +75,18 @@ function InformationCLub() {
           <Grid item xs={12} lg={7} sx={{ ml: "auto" }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
-                <MKTypography variant="h4" color="info" fontWeight="bold" mb={3}>
-                  Name: 
+                <MKTypography variant="h4" color="dark" fontWeight="bold" mb={3}>
+                  Name: {clubData.name}
                 </MKTypography>
-                <MKTypography variant="h4" color="info" fontWeight="bold" mb={3}>
-                  Foundation Year: 
+                <MKTypography variant="h4" color="dark" fontWeight="bold" mb={3}>
+                  Foundation Year: {clubData.year}
                 </MKTypography>
-                <MKTypography variant="h4" color="info" fontWeight="bold" mb={3}>
-                  Email: 
+                <MKTypography variant="h4" color="dark" fontWeight="bold" mb={3}>
+                  Email: {clubData.email}
                 </MKTypography>
-                <MKButton variant="gradient" color="info" onClick={() => navigate('/reserve')}>Create a new reservation</MKButton>
+                <MKButton variant="gradient" color="info" onClick={() => navigate('/reserve')}>
+                  Create a new reservation
+                </MKButton>
               </Grid>
             </Grid>
           </Grid>
@@ -101,30 +103,37 @@ function InformationCLub() {
                 textAlign="center"
               >
                 <table className="table table-striped mt-5">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">class Number</th>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Start time </th>
-                                                    <th scope="col">End time </th>
-                                                    <th scope="col">Status </th>
-                                                </tr>
-                                            </thead>
-                                            {reservations.map(Reservation => (
-                                                <tr key={Reservation.Reservation_id}>
-                                                    <td>{Reservation.roomname}</td>
-                                                    <td>{Reservation.date.split('T')[0]}</td>
-                                                    <td>{Reservation.starttime}</td>
-                                                    <td>{Reservation.endtime}</td>
-                                                    <td>{Reservation.statu}</td>
-                                                    <td><button className="btn btn-danger" onClick={() => deleteReservation(Reservation.reservation_id)}>Delete</button></td>
-                                                    <td>
-                                                        <button className="btn btn-pastel" onClick={() => openUpdateForm(Reservation)} >UPDATE</button>
-                                                    </td>
-
-                                                </tr>
-                                            ))}
-                                        </table>
+                  <thead>
+                    <tr>
+                      <th scope="col">Class Number</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Start time</th>
+                      <th scope="col">End time</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {reservations.map(reservation => (
+                      <tr key={reservation.reservation_id}>
+                        <td>{reservation.num_salle}</td>
+                        <td>{reservation.date.split('T')[0]}</td>
+                        <td>{reservation.starttime}</td>
+                        <td>{reservation.endtime}</td>
+                        <td>{reservation.statu}</td>
+                        <td>
+                          <button className="btn btn-danger" onClick={() => deleteReservation(reservation.reservation_id)}>
+                            Delete
+                          </button>
+                        </td>
+                        <td>
+                          <button className="btn btn-pastel" onClick={() => openUpdateForm(reservation)}>
+                            Update
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </MKTypography>
             </MKBox>
           </Card>
@@ -134,4 +143,4 @@ function InformationCLub() {
   );
 }
 
-export default InformationCLub;
+export default InformationClub;

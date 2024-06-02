@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 
 // react-router components
@@ -15,12 +14,11 @@ import Register from "layouts/pages/register";
 
 // Material Kit 2 React routes
 import routes from "routes";
-import Reservation from "layouts/pages/reservation";
 import Reserve from "layouts/pages/reserve";
 import AdminReservation from "layouts/pages/AdminReservation";
 import JCI from "layouts/pages/clubEvent/JCI";
-import ACM from "layouts/pages/clubEvent/ACM"
-import JEI from "layouts/pages/clubEvent/JEI"
+import ACM from "layouts/pages/clubEvent/ACM";
+import JEI from "layouts/pages/clubEvent/JEI";
 import Securinets from "layouts/pages/clubEvent/Securinets";
 import Acm_Page from "layouts/pages/Club";
 
@@ -53,11 +51,11 @@ export default function App() {
         <Route path="/reservation" element={<AdminReservation />} />
         <Route path="/reserve" element={<Reserve />} />
         <Route path="*" element={<Navigate to="/presentation" />} />
-        <Route path="/JCI" element={<JCI/>} />
-        <Route path="/ACM" element={<ACM/>} />
-        <Route path="/JEI" element={<JEI/>} />
-        <Route path="/Club/ACM" element={<Acm_Page/>} />
-        <Route path="/Securinets" element={<Securinets/>} />
+        <Route path="/JCI" element={<JCI />} />
+        <Route path="/ACM" element={<ACM />} />
+        <Route path="/JEI" element={<JEI />} />
+        <Route path="/Club/ACM" element={<Acm_Page />} />
+        <Route path="/Securinets" element={<Securinets />} />
       </Routes>
     </ThemeProvider>
   );

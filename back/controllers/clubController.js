@@ -53,6 +53,20 @@ const deletedClub=await club.findOneAndDelete({clubNum:num});
    res.status(500).json({message:"Internal Server Error"});
  }    
 });
+const getdatabyname = expressAsyncHandler(async (req, res) => {
+  try {
+    const name = req.params.name;
+    const clubb = await club.findOne({ name: name });
+    if (clubb) {
+      res.status(200).json(clubb);
+    } else {
+      res.status(404).json({ message: 'Club not found' });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: 'Une erreur est survenue lors de la récupération du club par nom.' });
+  }
+});
 const updateclub = expressAsyncHandler(async(req,res)=>{
   try { 
       const num = req.params.num;
@@ -70,7 +84,7 @@ const updateclub = expressAsyncHandler(async(req,res)=>{
       res.status(500).send('Update failed');
   }
 });
-module.exports={getclub,getclubs,addclub,deletclub,updateclub}
+module.exports={getclub,getclubs,addclub,deletclub,updateclub,getdatabyname}
 
 
 
