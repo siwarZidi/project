@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-size: cover;
+  }
+  
+  .App {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+   
+  }
+  
+  .contact-form-container {
+    background-color: rgba(247, 244, 244, 0.2); /* Transparent background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px); /* Optional: blur effect for background */
+    width: 100%; /* Full width */
+    max-width: 400px; /* Max width for smaller form */
+  }
+  
+  .contact-form-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .contact-form-field {
+    margin-bottom: 15px;
+  }
+  
+  .contact-form-button {
+    width: 100%;
+  }
+  

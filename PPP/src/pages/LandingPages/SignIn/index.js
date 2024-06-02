@@ -48,7 +48,7 @@ function SignInBasic() {
       });
       if (response.ok) {
         console.log("Login successful!");
-        navigate("/Reservation");
+        navigate("/reserve");
       } else {
         console.error("Login failed");
         alert("fail");

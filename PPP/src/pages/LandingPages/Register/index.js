@@ -30,12 +30,13 @@ function RegisterInBasic() {
   const [year, setYear] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [ confirmPassword, setconfirmPassword] = useState("");
+  const [avatar, setAvatar] = useState(null); // Ajout de l'état pour l'image
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
       const body = { name, year, email, password };
-      await fetch("http://localhost:5000/club", {
+      await fetch("http://localhost:5000/club/post", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -44,6 +45,10 @@ function RegisterInBasic() {
     } catch (err) {
       console.error(err.messaage);
     }
+  };
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    setAvatar(file);
   };
 
   return (
@@ -125,6 +130,21 @@ function RegisterInBasic() {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </MKBox>
+                  <MKBox mb={2}>
+                    <MKInput
+                      type="password"
+                      label="Confirm Password"
+                      fullWidth
+                      value={confirmPassword}
+                      onChange={(e) => setconfirmPassword(e.target.value)}
+                    />
+                  </MKBox>
+                  <MKBox mb={2}>
+                    <MKInput
+                     type="file" 
+                     onChange={handleAvatarChange} 
+                     accept="image/*" />
+                  </MKBox>
                   <MKBox display="flex" alignItems="center" ml={-1}></MKBox>
                   <MKBox mt={4} mb={1}>
                     <MKButton type="submit" variant="gradient" color="error" fullWidth>
@@ -134,7 +154,7 @@ function RegisterInBasic() {
                 </MKBox>
               </MKBox>
             </Card>
-          </Grid>
+          </Grid> 
         </Grid>
       </MKBox>
     </>

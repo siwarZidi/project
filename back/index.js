@@ -22,8 +22,27 @@ app.use(session(sessionConfig));
 ///
 
 
+//sessions:
+const session=require('express-session')
+const cookieParser =require('cookie-parser');
+const sessionSecret = process.env.SESSION_SECRET || 'Secret_session_key';
+
+const sessionConfig = {
+    secret: sessionSecret,
+    resave: false, // Don't resave sessions that haven't changed
+    saveUninitialized: true, // Save new sessions even if not initialized
+    cookie: {
+      secure: true, // Set to `false` only for development (HTTPS is crucial)
+      httpOnly: true, // Prevent client-side JavaScript access to the cookie
+      maxAge: 1000 * 60 * 60, // One hour in milliseconds (customize expiration)
+    }
+  };
+app.use(session(sessionConfig));
+///
+
 app.use(cors());
 app.use(express.json());
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
