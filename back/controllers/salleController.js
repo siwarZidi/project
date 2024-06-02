@@ -13,8 +13,8 @@ const getsalles= expressAsyncHandler(async(req,res)=>{
   });
 const addsalle = expressAsyncHandler(async(req,res)=>{
     try{
-        const {num}=req.body;
-       const existingSalle=await salle.findOne({num_salle:num});
+        const salleName=req.body.name;
+       const existingSalle=await salle.findOne({name:salleName});
        if(existingSalle){
         res.status(400).send("la salle existe deja dans la base");
        }

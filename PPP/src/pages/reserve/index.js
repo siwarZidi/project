@@ -13,6 +13,7 @@ import { useState } from "react";
 import Popup from "components/PopUp/Popup";
 // Images
 import bgImage from "assets/images/insat.jpg";
+import { Description } from "@mui/icons-material";
 
 function Reserve() {
   const navigate = useNavigate();
@@ -21,11 +22,15 @@ function Reserve() {
   const [date, setdate] = useState("");
   const [starttime, setStarttime] = useState("");
   const [endtime, setFinishtime] = useState("");
+  const [trainer, setTrainer] = useState("");
+  const [workShopName, setWorkShopName] = useState("");
+  const [description, setDescription] = useState("");
   const [buttonPopup, setButtonPopup] = useState(false);
+  const [avatar, setAvatar] = useState(null); // Ajout de l'état pour l'image
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const body = { clubname, num_salle, date, starttime, endtime };
+      const body = { clubname, num_salle, date, starttime, endtime,trainer,workShopName,description,avatar };
       const response = await fetch("http://localhost:5000/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -41,6 +46,10 @@ function Reserve() {
     } catch (error) {
       console.error("Error:", error);
     }
+  };
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    setAvatar(file);
   };
   return (
     <MKBox component="section" py={{ xs: 0, lg: 6 }}>
@@ -99,7 +108,7 @@ function Reserve() {
                         ml={2}
                         fontWeight="regular"
                       >
-                        (+216) ***********
+                        (+216) 95886824
                       </MKTypography>
                     </MKBox>
                     <MKBox display="flex" color="white" p={1}>
@@ -114,7 +123,7 @@ function Reserve() {
                         ml={2}
                         fontWeight="regular"
                       >
-                        ahmed.trigui@insat.ucar.tn
+                        INSAT.CLUB@insat.ucar.tn
                       </MKTypography>
                     </MKBox>
                     <MKBox display="flex" color="white" p={1}>
@@ -178,6 +187,22 @@ function Reserve() {
                         />
                       </Grid>
                       <Grid item xs={12} pr={1} mb={3}>
+                        <MKTypography variant="h6" mb={1}>
+                          Name of the workshop or the event :
+                        </MKTypography>
+                        <MKBox mb={2}>
+                          <MKInput
+                            type="text"
+                            fullWidth
+                            value={workShopName}
+                            onChange={(e) => setWorkShopName(e.target.value)}
+                          />
+                        </MKBox>
+                      </Grid>
+                      <Grid item xs={12} pr={1} mb={3}>
+                      <MKTypography variant="h6" mb={1}>
+                            Date :
+                          </MKTypography>
                         <MKInput
                           type="date"
                           fullWidth
@@ -208,6 +233,43 @@ function Reserve() {
                             fullWidth
                             value={endtime}
                             onChange={(e) => setFinishtime(e.target.value)}
+                          />
+                        </MKBox>
+                      </Grid>
+                      <Grid item xs={12} pr={1} mb={3}>
+                        <MKTypography variant="h6" mb={1}>
+                          Trainer Name :
+                        </MKTypography>
+                        <MKBox mb={2}>
+                          <MKInput
+                            type="text"
+                            fullWidth
+                            value={trainer}
+                            onChange={(e) => setTrainer(e.target.value)}
+                          />
+                        </MKBox>
+                        </Grid>
+                        <Grid item xs={12} pr={1} mb={3}>
+                        <MKTypography variant="h6" mb={1}>
+                          Trainer CV :
+                        </MKTypography>
+                        <MKBox mb={2}>
+                        <MKInput
+                          type="file" 
+                          onChange={handleAvatarChange} 
+                          accept="image/*" />
+                       </MKBox>
+                        </Grid>
+                        <Grid item xs={12} pr={1} mb={3}>
+                        <MKTypography variant="h6" mb={1}>
+                          Short Description for the workshop or the event :
+                        </MKTypography>
+                        <MKBox mb={2}>
+                          <MKInput
+                            type="text"
+                            fullWidth
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                           />
                         </MKBox>
                       </Grid>
