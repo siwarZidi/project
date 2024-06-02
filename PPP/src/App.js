@@ -22,6 +22,7 @@ import JCI from "layouts/pages/clubEvent/JCI";
 import ACM from "layouts/pages/clubEvent/ACM"
 import JEI from "layouts/pages/clubEvent/JEI"
 import Securinets from "layouts/pages/clubEvent/Securinets";
+import Acm_Page from "layouts/pages/Club";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="/JCI" element={<JCI/>} />
         <Route path="/ACM" element={<ACM/>} />
         <Route path="/JEI" element={<JEI/>} />
+        <Route path="/Club/ACM" element={<Acm_Page/>} />
         <Route path="/Securinets" element={<Securinets/>} />
       </Routes>
     </ThemeProvider>

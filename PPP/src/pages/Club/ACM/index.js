@@ -14,81 +14,26 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 
 // Presentation page sections
 import Counters from "pages/Presentation/sections/Counters";
-import Information from "pages/Presentation/sections/Information";
+import InformationClub from "pages/Presentation/sections/InformationClub";
 import DesignBlocks from "pages/Presentation/sections/DesignBlocks";
 
 // Routes
 import routes from "routes";
 import footerRoutes from "footer.routes";
 
-// Images
-import bgImage from "assets/images/bg-presentation.jpg";
 
-function Presentation() {
+
+
+
+function ACM_page() {
   return (
     <>
       <DefaultNavbar
-        action={{
-          type: "internal",
-          route: "/register",
-          label: "Register Now",
-          color: "error",
-        }}
         routes={routes}
         sticky
       />
-      <MKBox
-        minHeight="75vh"
-        width="100%"
-        sx={{
-          backgroundImage: `url(${bgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "top",
-          display: "grid",
-          placeItems: "center",
-        }}
-      >
-        <Container>
-          <Grid container item xs={12} lg={7} justifyContent="center" mx="auto">
-            <MKTypography
-              variant="h1"
-              color="white"
-              mt={-6}
-              mb={1}
-              sx={({ breakpoints, typography: { size } }) => ({
-                [breakpoints.down("md")]: {
-                  fontSize: size["3xl"],
-                },
-              })}
-            >
-              Insat Clubs Reservation{" "}
-            </MKTypography>
-            <MKTypography
-              variant="body1"
-              color="white"
-              textAlign="center"
-              px={{ xs: 6, lg: 12 }}
-              mt={1}
-            >
-              Free novel Web Platform for Simultaneous Workshop Session Booking.
-            </MKTypography>
-          </Grid>
-        </Container>
-      </MKBox>
-      <Card
-        sx={{
-          p: 2,
-          mx: { xs: 2, lg: 3 },
-          mt: -8,
-          mb: 4,
-          backgroundColor: ({ palette: { white }, functions: { rgba } }) => rgba(white.main, 0.8),
-          backdropFilter: "saturate(200%) blur(30px)",
-          boxShadow: ({ boxShadows: { xxl } }) => xxl,
-        }}
-      >
-        <Counters />
-        <Information />
-        <DesignBlocks />
+
+        <InformationClub />
         <MKBox pt={18} pb={6}>
           <Container>
             <Grid container spacing={3}>
@@ -129,7 +74,6 @@ function Presentation() {
             </Grid>
           </Container>
         </MKBox>
-      </Card>
       <MKBox pt={9} px={1} mt={6}>
         <DefaultFooter content={footerRoutes} />
       </MKBox>
@@ -137,4 +81,4 @@ function Presentation() {
   );
 }
 
-export default Presentation;
+export default ACM_page;
