@@ -42,27 +42,8 @@ const routes = [
   {
     name: "login",
     icon: <Icon>account_circle</Icon>,
-    columns: 1,
-    rowsPerColumn: 2,
-    collapse: [
-      {
-        name: "sign in as :",
-        collapse: [
-          {
-            name: "User",
-            route: "/pages/authentication/sign-in",
-            component: <SignIn />,
-          },
-          {
-            name: "Administrater",
-            route: "/pages/authentication/sAdmin",
-            component: <AuthAdminPage />,
-          },
-        ],
-      },
-    ],
-    //route: "/pages/authentication/sign-in",
-    //component: <SignIn />,
+    route: "/pages/authentication/sign-in",
+    component: <SignIn />,
   },
 ];
 

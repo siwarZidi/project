@@ -51,6 +51,12 @@ function JeiInBasic() {
 useEffect(() => {
     getReservations();
 }, []);
+function formatTime(isoDate) {
+  const date = new Date(isoDate);
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
 //contact us
 const [formData, setFormData] = useState({
   name: '',
@@ -232,8 +238,8 @@ const handleSubmit = (e) => {
                                                 <tr key={Reservation._id}>
                                                     <td>{Reservation.workShopName}</td>
                                                     <td>{Reservation.date.split('T')[0]}</td>
-                                                    <td>{Reservation.starttime.split('T')[0]}</td>
-                                                    <td>{Reservation.endtime.split('T')[0]}</td>
+                                                    <td>{formatTime(Reservation.starttime)}</td>
+                                                    <td>{formatTime(Reservation.endtime)}</td>
                                                     <td>{Reservation.num_salle}</td>
                                                     <td>{Reservation.trainer}</td>
                                                     <td>{Reservation.description}</td>

@@ -3,8 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-
-// Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKInput from "components/MKInput";
@@ -15,7 +13,6 @@ import { Button, Modal, ModalHeader, ModalBody, FormGroup, Input, Label } from "
 import "./PopStyle.css";
 
 const ListReservations = () => {
-  // Update state
   const [showPopup, setShowPopup] = useState(false);
   const [updateData, setUpdateData] = useState({
     date: "",
@@ -24,8 +21,6 @@ const ListReservations = () => {
     num_salle: "",
   });
   const [showUpdateForm, setShowUpdateForm] = useState(false);
-
-  // Filter state
   const [filterData, setFilterData] = useState({
     date: "",
     startTime: "",
@@ -41,21 +36,17 @@ const ListReservations = () => {
   const [numSalle, setNumSalle] = useState("");
   const [statu, setStatu] = useState("");
   const [workShopName, setworkShopName] = useState("");
-  // Reservations state
   const [Reservations, setReservations] = useState([]);
 
-  // Open update form
   const openUpdateForm = (reservation) => {
     setShowUpdateForm(true);
     setUpdateData(reservation);
   };
 
-  // Close update form
   const closeUpdateForm = () => {
     setShowUpdateForm(false);
   };
 
-  // Handle submit update
   const handleSubmitUpdate = async () => {
     try {
       await fetch(`http://localhost:5000/reservation/update/${updateData.num_reservation}`, {
@@ -72,7 +63,6 @@ const ListReservations = () => {
     }
   };
 
-  // Handle filter
   const handleFilter = async () => {
     try {
       await fetch(`http://localhost:5000/filtrage`, {
@@ -88,7 +78,6 @@ const ListReservations = () => {
     }
   };
 
-  // Delete reservation
   const deleteReservation = async (id) => {
     try {
       await fetch(`http://localhost:5000/reservation/decline/${id}`, {
@@ -99,7 +88,7 @@ const ListReservations = () => {
       console.error(err.message);
     }
   };
-  // Delete reservation
+
   const acceptReservation = async (id) => {
     try {
       await fetch(`http://localhost:5000/reservation/accept/${id}`, {
@@ -111,7 +100,6 @@ const ListReservations = () => {
     }
   };
 
-  // Get reservations
   const getReservations = async () => {
     try {
       const response = await fetch("http://localhost:5000/reservation/get");
@@ -126,10 +114,17 @@ const ListReservations = () => {
     getReservations();
   }, []);
 
+  const formatTime = (isoDate) => {
+    if (!isoDate) return '';
+    const timePart = isoDate.split('T')[1]; // Extraire la partie temporelle
+    const [hours, minutes] = timePart.split(':'); // Séparer les heures et les minutes
+    return `${hours}:${minutes}`;
+  };
+
   return (
     <>
       <Container>
-        <DefaultNavbar routes={routes}   />
+        <DefaultNavbar routes={routes} />
         <MKBox px={1} width="100%" height="100vh" mx="auto" position="relative" style={{ top: '100px' }}>
           <Grid container spacing={1} justifyContent="center" alignItems="center" height="100%">
             <Grid item xs={11} sm={9} md={5} lg={4} xl={10}>
@@ -192,9 +187,9 @@ const ListReservations = () => {
                 </MKBox>
               </Card>
             </Grid>
-            <Grid item xs={11} sm={9} md={9} lg={9} xl={9}>
+            <Grid item >
               <Card>
-                <MKBox pt={4} pb={3} px={3}>
+                <MKBox>
                   <MKTypography
                     variant="h4"
                     fontWeight="medium"
@@ -207,7 +202,7 @@ const ListReservations = () => {
                       <thead>
                         <tr>
                           <th scope="col">Class Number</th>
-                          <th scope="col">Worshop Name</th>
+                          <th scope="col">Workshop Name</th>
                           <th scope="col">Date</th>
                           <th scope="col">Start time</th>
                           <th scope="col">End time</th>
@@ -221,8 +216,8 @@ const ListReservations = () => {
                             <td>{Reservation.num_salle}</td>
                             <td>{Reservation.workShopName}</td>
                             <td>{Reservation.date.split('T')[0]}</td>
-                            <td>{Reservation.starttime}</td>
-                            <td>{Reservation.endtime}</td>
+                            <td>{formatTime(Reservation.starttime)}</td>
+                            <td>{formatTime(Reservation.endtime)}</td>
                             <td>{Reservation.clubname}</td>
                             <td>{Reservation.statu}</td>
                             <td>
@@ -251,7 +246,6 @@ const ListReservations = () => {
           </div>
         </div>
       )}
-      {/* Update form */}
       <Modal isOpen={showUpdateForm} toggle={closeUpdateForm}>
         <ModalHeader toggle={closeUpdateForm}>Modifier la réservation</ModalHeader>
         <ModalBody>
