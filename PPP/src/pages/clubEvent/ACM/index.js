@@ -1,4 +1,4 @@
-import { useState , useEffect } from "react";
+import { useState, useEffect }  from "react";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
@@ -18,7 +18,10 @@ import RotatingCardBack from "examples/Cards/RotatingCard/RotatingCardBack";
 
 // Material Kit 2 React page layout routes
 import routes from "routes";
-import { Facebook, Instagram } from 'bootstrap-icons-react';
+import '../styles.css';
+import { TextField, Button, Typography, Box } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 // Images
 import photo1 from "assets/images/bureauclub/ACM/karim.png";
@@ -27,7 +30,9 @@ import photo3 from "assets/images/bureauclub/ACM/ines.png";
 import photo4 from "assets/images/bureauclub/ACM/rim.png";
 import bgFront from "assets/images/bureauclub/ACM/ACM2.png";
 import bgBack from "assets/images/bureauclub/ACM/ACM1.png";
-import photo from "assets/images/bureauclub/ACM/eventacm.png"
+import photo from "assets/images/bureauclub/ACM/eventacm.png";
+import video1 from "assets/images/bureauclub/annimation.mp4";
+
 
 const photos = [
   { src: photo1, name: 'Président', contact: 'karim@insat.ucar.tn' },
@@ -36,12 +41,13 @@ const photos = [
   { src: photo4, name: 'RH', contact: 'rim@insat.ucar.tn' }
 ];
 
+const theme = createTheme();
 function AcmInBasic() {
 
   const [Reservations, setReservations] = useState([]);
   const getReservations = async () => {
     try {
-        const response = await fetch("http://localhost:5000/reservation/get")
+        const response = await fetch("http://localhost:5000/reservation/getByClub/ACM")
         const jsondata = await response.json();
         setReservations(jsondata);
 
@@ -53,14 +59,39 @@ function AcmInBasic() {
 useEffect(() => {
     getReservations();
 }, []);
+//contact us
+const [formData, setFormData] = useState({
+  name: '',
+  email: '',
+  message: ''
+});
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData({
+    ...formData,
+    [name]: value
+  });
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  // Ajoutez ici la logique pour soumettre le formulaire
+  console.log(formData);
+};
 
 
   return (
     <>
      
-      <Container>
-     
-      <DefaultNavbar routes={routes} transparent light />
+     <div style={{ position: 'relative', width: '100%', height: '450vh', overflow: 'hidden' }}>
+      <DefaultNavbar routes={routes}  />
+      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: -1, width: '100%', height: '100%' }}>
+        <video autoPlay loop muted style={{ minWidth: '100%', minHeight: '100%', width: 'auto', height: 'auto', objectFit: 'cover' }}>
+          <source src={video1} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
       <MKBox
         position="absolute"
         top={0}
@@ -73,7 +104,7 @@ useEffect(() => {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
-      />
+      />  
       
       <MKBox px={1} width="100%" height="100vh" mx="auto" position="relative" zIndex={2} mt={10}>
         <Grid container spacing={1} justifyContent="center" alignItems="flex-start" height="100%">
@@ -223,28 +254,84 @@ useEffect(() => {
                                                 </tr>
                                             </thead>
                                             {Reservations.map(Reservation => (
-                                                <tr key={Reservation.Reservation_id}>
-                                                    <td>{Reservation.roomname}</td>
+                                                <tr key={Reservation._id}>
+                                                    <td>{Reservation.workShopName}</td>
                                                     <td>{Reservation.date.split('T')[0]}</td>
-                                                    <td>{Reservation.starttime}</td>
-                                                    <td>{Reservation.endtime}</td>
-                                                    <td>{Reservation.clubname}</td>
-                                                    <td><button className="btn btn-danger" onClick={() => deleteReservation(Reservation.reservation_id)}>Delete</button></td>
-                                                    <td>
-                                                        <button className="btn btn-pastel" onClick={() => openUpdateForm(Reservation)} >UPDATE</button>
-                                                    </td>
+                                                    <td>{Reservation.starttime.split('T')[0]}</td>
+                                                    <td>{Reservation.endtime.split('T')[0]}</td>
+                                                    <td>{Reservation.num_salle}</td>
+                                                    <td>{Reservation.trainer}</td>
+                                                    <td>{Reservation.description}</td>
+                    
 
                                                 </tr>
                                             ))}
                               
                  </table>
+                 <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="sm" className="App">
+        <Box className="contact-form-container">
+          <Typography component="h1" variant="h5" className="contact-form-title">
+            Contact Us
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} className="contact-form-field">
+                <TextField
+                  name="name"
+                  required
+                  fullWidth
+                  id="name"
+                  label="Name"
+                  autoFocus
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} className="contact-form-field">
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} className="contact-form-field">
+                <TextField
+                  required
+                  fullWidth
+                  id="message"
+                  label="Message"
+                  name="message"
+                  multiline
+                  rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              className="contact-form-button"
+            >
+              Send Message
+            </Button>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
               </Grid>
 
             </MKBox>
           </Grid>
         </Grid>
       </MKBox>
-    </Container>
+    </div>
      
     </>
   );

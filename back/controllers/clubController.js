@@ -23,8 +23,8 @@ const getclubs= expressAsyncHandler(async(req,res)=>{
 
  const addclub=expressAsyncHandler(async(req,res)=>{
    try{
-      const num=req.params.num;
-      const existClub=await club.findOne({clubNum:num});
+    const nameClub=req.body.name
+      const existClub=await club.findOne({name:nameClub});
       if(existClub){
          res.status(400).send('Club already exists');
       }

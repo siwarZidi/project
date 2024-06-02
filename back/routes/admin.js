@@ -13,3 +13,4 @@
 
   
 // module.exports = router; 
+//sessions : ajout de protected routes for the admin

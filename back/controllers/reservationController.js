@@ -2,6 +2,7 @@ const expressAsyncHandler = require('express-async-handler');
 
 
 const Reservation = require('../models/reservation');
+const Club = require('../models/club');
 
 
 
@@ -80,18 +81,20 @@ const updatereservation=expressAsyncHandler(async(req,res)=>{
     }
 });
 
-// const acceptreservation = expressAsyncHandler(async(req,res)=>{
-//     try{
-//         const {num_salle,date,starttime,endtime}=req.body;
-//         query='INSERT INTO reservation (clubname,num_salle,date,starttime,endtime) VALUES ($1,$2,$3,$4,$5)';
-//         const result=await pool.query(query,[clubname,num_salle,date,starttime,endtime]);
-//     }catch(err){
-//         console.error("Error",err);
-//         res.status(500).json({message:"Internal Server Error"});
-//     }
-// })
+const findResByClub=expressAsyncHandler(async(req,res)=>{
+    try{
+      const name=req.params.name;
+      const reservations=await Reservation.find({clubname:name})
+      res.json(reservations);
+    }
+    catch(err){
+        console.log(err);
+        res.status(404).send('Club Not Found');
+    }
 
- module.exports={getreservation,makereservation,cancelreservation,updatereservation}
+})
+
+ module.exports={getreservation,makereservation,cancelreservation,updatereservation,findResByClub}
 
 
 
