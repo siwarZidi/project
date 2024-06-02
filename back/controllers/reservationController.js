@@ -3,7 +3,7 @@ const expressAsyncHandler = require('express-async-handler');
 
 const Reservation = require('../models/reservation');
 const Club = require('../models/club');
-
+const Stat =require('../models/stat');
 
 
 const getreservation= expressAsyncHandler(async(req,res)=>{
@@ -18,18 +18,19 @@ const getreservation= expressAsyncHandler(async(req,res)=>{
 
 const makereservation = expressAsyncHandler(async (req, res) => {
   try {
-      const { num_salle, date, starttime, endtime } = req.body;
-
+      const { workShopName,description,clubname,num_salle,date,starttime,endtime,trainer} = req.body;
+      
       // Vérifier si la salle est disponible pour la date et l'heure spécifiées
       const existingReservation = await Reservation.findOne({
           num_salle: num_salle,
           date: date,
           $or: [
-              { $and: [{ starttime: { $lte: starttime } }, { endtime: { $gte: starttime } }] },
-              { $and: [{ starttime: { $lte: endtime } }, { endtime: { $gte: endtime } }] },
-              { $and: [{ starttime: { $gte: starttime } }, { endtime: { $lte: endtime } }] }
+            { $and: [{ starttime: { $lte: starttime} }, { endtime: { $gt: starttime } }] }, // Overlaps at starttime
+            { $and: [{ starttime: { $lt: endtime } }, { endtime: { $gt: endtime } }] }, // Overlaps at endtime
+            { $and: [{ starttime: { $gte: starttime } }, { endtime: { $lte: endtime } }] }
           ]
       });
+      console.log(existingReservation);
 
       if (existingReservation) {
           res.status(400).send("La salle n'est pas disponible à cette date et heure.");
@@ -37,7 +38,7 @@ const makereservation = expressAsyncHandler(async (req, res) => {
       }
 
       else{
-        const newReservation = await Reservation.create(req.body);
+        const newReservation = await Reservation.create({ workShopName,description,clubname,num_salle,date,starttime,endtime,trainer,statu:'pending'});
         res.status(200).send("Réservation ajoutée avec succès.");
       }
      }
@@ -89,9 +90,36 @@ const findResByClub=expressAsyncHandler(async(req,res)=>{
         res.status(404).send('Club Not Found');
     }
 
-})
+});
+const acceptreservation = expressAsyncHandler(async(req,res)=>{
+  
+  try{
+    const num=req.params.num;
+    const{ statu }='accepted';
+    const reservation= await Reservation.findOneAndUpdate({num_reservation:num},{statu:statu});
 
- module.exports={getreservation,makereservation,cancelreservation,updatereservation,findResByClub}
+}catch(err){
+  console.log(err);
+  res.status(404).send('reservation not found and update failed');
+}
+});
+
+const declinereservation = expressAsyncHandler(async(req,res)=>{
+  
+  try{
+    const num=req.params.num;
+    const{ statu }='rejected';
+    const reservation= await Reservation.findOneAndUpdate({num_reservation:num},{statu:statu});
+
+}catch(err){
+  console.log(err);
+  res.status(404).send('reservation not found and update failed');
+}
+});
+
+
+
+ module.exports={getreservation,makereservation,cancelreservation,updatereservation,findResByClub,acceptreservation,declinereservation}
 
 
 

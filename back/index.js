@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require("cors");
 const  mongoose=require('mongoose')
-
+const bodyParser=require('body-parser');
 //sessions:
 const session=require('express-session')
 const cookieParser =require('cookie-parser');
@@ -10,22 +10,26 @@ const sessionSecret = process.env.SESSION_SECRET || 'Secret_session_key';
 
 const sessionConfig = {
     secret: sessionSecret,
-    resave: false, // Don't resave sessions that haven't changed
-    saveUninitialized: true, // Save new sessions even if not initialized
+    resave: false, 
+    saveUninitialized: true, 
     cookie: {
-      secure: true, // Set to `false` only for development (HTTPS is crucial)
-      httpOnly: true, // Prevent client-side JavaScript access to the cookie
-      maxAge: 1000 * 60 * 60, // One hour in milliseconds (customize expiration)
+      secure: true, 
+      httpOnly: true, 
+      maxAge: 1000 * 60 * 60,
     }
   };
 app.use(session(sessionConfig));
 ///
 
+
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
-mongoose.connect('mongodb://localhost:27017/ppp')
+mongoose.connect('mongodb+srv://arij:arij123@cluster0.g2wtx8e.mongodb.net/PPP')
 
 //manage all the urls that begin with /reservation with the /routes/reservation file:
  const reservationRouter =require("./routes/reservation");

@@ -15,6 +15,7 @@ const registration = expressAsyncHandler(async (req, res) => {
 
     
     const existingClub = await club.findOne({ name: req.body.name });
+    console.log(existingClub);
     if (existingClub) {
       return res.status(400).json('Club already exists');
     }
@@ -25,6 +26,7 @@ const registration = expressAsyncHandler(async (req, res) => {
       year: req.body.year, 
       email: req.body.email,
       password: hashedPassword,
+      image:req.body.image
     });
     const createdClub = await newClub.save();
 
