@@ -9,8 +9,8 @@ const reservationSchema=new mongoose.Schema({
     clubname:String,
     num_salle: Number,
     date: Date,
-    starttime: String,
-    endtime: String,
+    starttime: Date,
+    endtime: Date,
     trainer: String,
     statu: { type: String, enum: Object.values(Stat), default: Stat.PENDING }
 });

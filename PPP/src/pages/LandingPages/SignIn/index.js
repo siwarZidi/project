@@ -51,10 +51,15 @@ function SignInBasic() {
       if (response.ok) {
         const userData = await response.json();
         console.log(userData);
-        setClub(userData);
-        localStorage.setItem('club', JSON.stringify(userData));
-        navigate(`/Club/${userData.name}`);
-        console.log("Login successful!");
+        if (userData.email === 'admin@gmail.com') {
+          // Navigate to reservation page for admin
+          navigate(`/reservation`);
+        } else {
+          // Otherwise, assume it's a club login
+          setClub(userData);
+          localStorage.setItem('club', JSON.stringify(userData));
+          navigate(`/Club/${userData.name}`);
+        }
       }else {
         console.error("Login failed");
         alert("fail");

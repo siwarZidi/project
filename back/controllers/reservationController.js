@@ -45,7 +45,7 @@ const makereservation = expressAsyncHandler(async (req, res) => {
       }
 
       else{
-        const newReservation = await Reservation.create({ workShopName,description,clubname,num_salle,date,starttime,endtime,trainer,statu:'pending'});
+        const newReservation = await Reservation.create(req.body);
         res.status(200).send("Réservation ajoutée avec succès.");
       }
      }

@@ -24,7 +24,7 @@ const login =expressAsyncHandler(async(req,res)=>{
                         req.session.isadmin= true;
                         req.session.name ='admin';
                         req.session.email=email;
-                        res.status(200).json('Admin login successfully');
+                        res.status(200).json({email:existingclub.email});
                     }else{
 
                          req.session.clubid=existingclub._id;

@@ -116,6 +116,7 @@ const ListReservations = () => {
     }
   };
 
+  
   useEffect(() => {
     getReservations();
   }, []);
@@ -231,7 +232,7 @@ const ListReservations = () => {
                             <td>
                               <button className="btn btn-vet" onClick={() => acceptReservation(Reservation.num_reservation, Reservation.email)}>ACCEPT</button>
                             </td>
-                            <td><button className="btn btn-danger" onClick={() => deleteReservation(Reservation.num_reservation)}>DECLINE</button></td>
+                            <td><button className="btn btn-danger" onClick={() => declineReservation(Reservation.num_reservation)}>DECLINE</button></td>
                             <td>
                               <button className="btn btn-pastel" onClick={() => openUpdateForm(Reservation)}>UPDATE</button>
                             </td>
