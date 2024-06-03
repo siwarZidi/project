@@ -11,24 +11,33 @@ import Card from "@mui/material/Card";
 import { Button, Modal, ModalHeader, ModalBody, FormGroup, Input, Label } from "reactstrap";
 
 // Images
-import img_acm from "assets/images/clubs-logos/ACM-logo.jpg";
+import acm from "assets/images/clubs-logos/ACM-logo.jpg";
+import ieee from "assets/images/clubs-logos/IEEE-logo.jpg";
+import jei from "assets/images/clubs-logos/JEI-logo.jpg";
+import aero from "assets/images/clubs-logos/Aerobotix-logo.jpg";
+import jci from "assets/images/clubs-logos/JCI-logo.jpg";
+import and from "assets/images/clubs-logos/Android-logo.jpg";
+import sec from "assets/images/clubs-logos/Securinets-logo.jpg";
+import tim from "assets/images/clubs-logos/Timun-logo.jpg";
+import chess from "assets/images/clubs-logos/Chess-logo.png";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function InformationClub() {
   const [clubData, setClubData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [reservations, setReservations] = useState([]);
-  const clubName = "ACM";  
+  //const clubName = "JCI"; 
+  const {name}=useParams(); 
+  const clubName=name.toUpperCase();
   const [updateData, setUpdateData] = useState({
     date: "",
     workShopName: "",
     startTime: "",
     endTime: "",
     num_salle: "",
-    trainer: "",
-    description: "",
+    trainer: ""
   });
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const closeUpdateForm = () => {
@@ -44,7 +53,8 @@ function InformationClub() {
         body: JSON.stringify(updateData),
       });
       closeUpdateForm();
-      window.location = "/Club/ACM";
+      window.location = `/Club/${clubName}`;
+      ;
     } catch (error) {
       console.error("Erreur lors de la mise à jour de la réservation:", error);
     }
@@ -105,12 +115,18 @@ function InformationClub() {
     return `${hours}:${minutes}`;
   };
 
+  const clubLogoMap = {
+    ACM: acm,
+    IEEE: ieee,
+    JCI: jci
+  };
+
   return (
     <MKBox component="section" py={6} my={6}>
       <Container>
         <Grid container item xs={11} mt={10} spacing={3} alignItems="center" sx={{ mx: "auto" }}>
           <Grid item xs={12} lg={4} sx={{ mx: "auto" }}>
-            <ExampleCard image={img_acm} />
+          <ExampleCard  image={clubLogoMap[clubName]} />
           </Grid>
           <Grid item xs={12} lg={7} sx={{ ml: "auto" }}>
             <Grid container spacing={3}>
@@ -150,6 +166,7 @@ function InformationClub() {
                       <th scope="col">Date</th>
                       <th scope="col">Start time</th>
                       <th scope="col">End time</th>
+                      <th scope="col">Trainer</th>
                       <th scope="col">Status</th>
                     </tr>
                   </thead>
@@ -161,6 +178,7 @@ function InformationClub() {
                         <td>{reservation.date.split('T')[0]}</td>
                         <td>{formatTime(reservation.starttime)}</td>
                         <td>{formatTime(reservation.endtime)}</td>
+                        <td>{reservation.trainer}</td>
                         <td>{reservation.statu}</td>
                         <td>
                           <button className="btn btn-danger" onClick={() => deleteReservation(reservation.num_reservation)}>
@@ -181,11 +199,11 @@ function InformationClub() {
           </Card>
         </Grid>
         <Modal isOpen={showUpdateForm} toggle={closeUpdateForm}>
-        <ModalHeader toggle={closeUpdateForm}>Modifier la réservation</ModalHeader>
+        <ModalHeader toggle={closeUpdateForm}>Modify the reservation</ModalHeader>
         <ModalBody>
           <FormGroup>
             <Label for="date">Workshop Name</Label>
-            <Input type="date" name="date" id="date" value={updateData.workShopName} onChange={(e) => setUpdateData({ ...updateData, date: e.target.value })} />
+            <Input type="text" name="workShopName" id="workShopName" value={updateData.workShopName} onChange={(e) => setUpdateData({ ...updateData, workShopName: e.target.value })} />
           </FormGroup>
           <FormGroup>
             <Label for="date">Date</Label>
@@ -201,11 +219,7 @@ function InformationClub() {
           </FormGroup>
           <FormGroup>
             <Label for="endTime">Trainer</Label>
-            <Input type="time" name="endTime" id="endTime" value={updateData.trainer} onChange={(e) => setUpdateData({ ...updateData, endTime: e.target.value })} />
-          </FormGroup>
-          <FormGroup>
-            <Label for="endTime">Description</Label>
-            <Input type="time" name="endTime" id="endTime" value={updateData.description} onChange={(e) => setUpdateData({ ...updateData, endTime: e.target.value })} />
+            <Input type="text" name="trainer" id="trainer" value={updateData.trainer} onChange={(e) => setUpdateData({ ...updateData, trainer: e.target.value })} />
           </FormGroup>
           <FormGroup>
             <Label for="num_salle">Class Number</Label>

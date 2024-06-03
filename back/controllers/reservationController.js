@@ -73,8 +73,8 @@ const cancelreservation = expressAsyncHandler(async(req,res)=>{
 const updatereservation=expressAsyncHandler(async(req,res)=>{
     try { 
         const num = req.params.num;
-        const { clubname,num_salle,date,starttime,endtime } = req.body;
-        const currentReservation = await Reservation.findOneAndUpdate({num_reservation:num},{ clubname,num_salle, date, starttime, endtime })
+        const { clubname,num_salle,date,starttime,endtime,trainer,workShopName } = req.body;
+        const currentReservation = await Reservation.findOneAndUpdate({num_reservation:num},{ clubname,num_salle, date, starttime, endtime, trainer,workShopName })
         if(currentReservation){
         res.status(200).send({ result: "Reservation found", msg: "Updated successfully" });}
         else{

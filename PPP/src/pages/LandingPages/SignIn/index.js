@@ -29,8 +29,10 @@ import routes from "routes";
 // Images
 import bgImage from "assets/images/bg-sign-in.jpeg";
 import { useNavigate } from "react-router-dom";
+import { useApp } from "context/AppContext";
 
 function SignInBasic() {
+  const {setClub}=useApp();
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
@@ -47,12 +49,17 @@ function SignInBasic() {
         body: JSON.stringify(body),
       });
       if (response.ok) {
+        const userData = await response.json();
+        console.log(userData);
+        setClub(userData);
+        localStorage.setItem('club', JSON.stringify(userData));
+        navigate(`/Club/${userData.name}`);
         console.log("Login successful!");
-        navigate("/reserve");
-      } else {
+      }else {
         console.error("Login failed");
         alert("fail");
       }
+    
     } catch (error) {
       console.error("Error:", error);
     }

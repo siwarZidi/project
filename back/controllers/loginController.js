@@ -4,7 +4,6 @@ const club=require("../models/club");
 const {validateLoginForm}=require("../validationduform/validationClub");
 const bcrypt = require('bcrypt');
 
-
 const login =expressAsyncHandler(async(req,res)=>{
 
     const {email,password}=req.body;
@@ -30,7 +29,7 @@ const login =expressAsyncHandler(async(req,res)=>{
                         req.session.id=existingclub._id;
                         req.session.name=existingclub.name;
                         req.session.email=email;
-                        res.status(200).json('login successfully');
+                        res.status(200).json({email,name:existingclub.name});
                     }
                     
                 }else{
@@ -52,7 +51,9 @@ const login =expressAsyncHandler(async(req,res)=>{
     }
 
 });
-/*
+
+
+
 const whoisloggedin= expressAsyncHandler(async(req,res,next)=>{
     if (req.session.isadmin){
         next();
@@ -72,11 +73,13 @@ const whoisloggedin= expressAsyncHandler(async(req,res,next)=>{
           }
     }
 });
-
-/*ajout de la fonction whoisloggedin to the arguments of the endpoints :
-app.get('/protected', isLoggedIn, (req, res) => {}
- */
 /*
+//ajout de la fonction whoisloggedin to the arguments of the endpoints :
+router.get('/protected', whoisloggedin, (req, res) => {
+    res.json({ message: 'You have accessed a protected route', club: req.club });
+});
+
+
 const logout= expressAsyncHandler(async(req,res)=>{
     req.session.destroy((err) => { 
         if (err) {
@@ -85,6 +88,6 @@ const logout= expressAsyncHandler(async(req,res)=>{
         } else {
           res.clearCookie('session-id');
           res.json({ message: 'Logged out successfully!' });
-}})});*/
-
-module.exports= { login }
+}})});
+*/
+module.exports= { login , whoisloggedin}
