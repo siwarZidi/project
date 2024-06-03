@@ -23,7 +23,7 @@ try {
         filterQuery.endtime=endtime;
     }
     if(num_salle){
-        filterQuery.clubname=clubname;
+        filterQuery.num_salle=num_salle;
     }
     if(statu){
         filterQuery.statu=statu;

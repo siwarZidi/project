@@ -3,24 +3,6 @@ const app = express();
 const cors = require("cors");
 const  mongoose=require('mongoose')
 const bodyParser=require('body-parser');
-//sessions:
-const session=require('express-session')
-const cookieParser =require('cookie-parser');
-const sessionSecret = process.env.SESSION_SECRET || 'Secret_session_key';
-
-const sessionConfig = {
-    secret: sessionSecret,
-    resave: false, 
-    saveUninitialized: true, 
-    cookie: {
-      secure: true, 
-      httpOnly: true, 
-      maxAge: 1000 * 60 * 60,
-    }
-  };
-app.use(session(sessionConfig));
-///
-
 
 //sessions:
 const session=require('express-session')

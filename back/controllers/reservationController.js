@@ -117,8 +117,6 @@ const declinereservation = expressAsyncHandler(async(req,res)=>{
 }
 });
 
-
-
  module.exports={getreservation,makereservation,cancelreservation,updatereservation,findResByClub,acceptreservation,declinereservation}
 
 
