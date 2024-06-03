@@ -3,7 +3,7 @@ const expressAsyncHandler = require('express-async-handler');
 
 const Reservation = require('../models/reservation');
 const Club = require('../models/club');
-
+const Stat =require('../models/stat');
 
 
 const getreservation= expressAsyncHandler(async(req,res)=>{
@@ -21,6 +21,7 @@ const makereservation = expressAsyncHandler(async (req, res) => {
   try {
       const { clubname, num_salle, date, starttime, endtime, trainer, workShopName, description } = req.body;
 
+
       // Vérifier si la salle est disponible pour la date et l'heure spécifiées
       const existingReservation = await Reservation.findOne({
         clubname: clubname,  
@@ -31,11 +32,12 @@ const makereservation = expressAsyncHandler(async (req, res) => {
         statu : "pending",
           date: date,
           $or: [
-              { $and: [{ starttime: { $lte: starttime } }, { endtime: { $gte: starttime } }] },
-              { $and: [{ starttime: { $lte: endtime } }, { endtime: { $gte: endtime } }] },
-              { $and: [{ starttime: { $gte: starttime } }, { endtime: { $lte: endtime } }] }
+            { $and: [{ starttime: { $lte: starttime} }, { endtime: { $gt: starttime } }] }, // Overlaps at starttime
+            { $and: [{ starttime: { $lt: endtime } }, { endtime: { $gt: endtime } }] }, // Overlaps at endtime
+            { $and: [{ starttime: { $gte: starttime } }, { endtime: { $lte: endtime } }] }
           ]
       });
+      console.log(existingReservation);
 
       if (existingReservation) {
           res.status(400).send("La salle n'est pas disponible à cette date et heure.");
@@ -43,8 +45,8 @@ const makereservation = expressAsyncHandler(async (req, res) => {
       }
 
       else{
-        const newReservation = await Reservation.create(req.body);
-        res.status(200).json({ message: "Réservation ajoutée avec succès.", clubname: newReservation.clubname });
+        const newReservation = await Reservation.create({ workShopName,description,clubname,num_salle,date,starttime,endtime,trainer,statu:'pending'});
+        res.status(200).send("Réservation ajoutée avec succès.");
       }
      }
    catch (error) {
@@ -95,9 +97,34 @@ const findResByClub=expressAsyncHandler(async(req,res)=>{
         res.status(404).send('Club Not Found');
     }
 
-})
+});
+const acceptreservation = expressAsyncHandler(async(req,res)=>{
+  
+  try{
+    const num=req.params.num;
+    const{ statu }='accepted';
+    const reservation= await Reservation.findOneAndUpdate({num_reservation:num},{statu:statu});
 
- module.exports={getreservation,makereservation,cancelreservation,updatereservation,findResByClub}
+}catch(err){
+  console.log(err);
+  res.status(404).send('reservation not found and update failed');
+}
+});
+
+const declinereservation = expressAsyncHandler(async(req,res)=>{
+  
+  try{
+    const num=req.params.num;
+    const{ statu }='rejected';
+    const reservation= await Reservation.findOneAndUpdate({num_reservation:num},{statu:statu});
+
+}catch(err){
+  console.log(err);
+  res.status(404).send('reservation not found and update failed');
+}
+});
+
+ module.exports={getreservation,makereservation,cancelreservation,updatereservation,findResByClub,acceptreservation,declinereservation}
 
 
 

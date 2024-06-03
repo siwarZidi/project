@@ -12,9 +12,10 @@ const ClubSchema=new mongoose.Schema({
   },
   password: {
         type: String,
-        minlength: 6,
+        minlength: 8,
         required: true,
   },
+  image:String
 });
 ClubSchema.pre('save', function (next) {
       this.name = this.name.toUpperCase();

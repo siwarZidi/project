@@ -9,10 +9,10 @@ const reservationSchema=new mongoose.Schema({
     clubname:String,
     num_salle: Number,
     date: Date,
-    starttime: Date,
-    endtime:Date,
-    trainer:String,
-    statu:{type:Stat,default:Stat.REJECTED}
+    starttime: String,
+    endtime: String,
+    trainer: String,
+    statu: { type: String, enum: Object.values(Stat), default: Stat.PENDING }
 });
 reservationSchema.plugin(AutoIncrement, { inc_field: 'num_reservation' });
 const reservation=mongoose.model("Reservation",reservationSchema);

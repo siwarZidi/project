@@ -1,19 +1,7 @@
-// const express = require('express');
+const express = require('express');
+const {filtrage} = require('../controllers/filtrageController');
+const router = express.Router();
 
-// const router = express.Router();
+router.route("/filtrage").get(filtrage);
 
-
-
-// //filtrer les reservations par date:
-// router.get("/filtrer_date",async(req,res)=>{
-//     try{
-//         const {clubname,num_salle,date,starttime,endtime} = req.body;
-//         const allReservations = await pool.query("SELECT * FROM reservation WHERE date=$1",[d1]);
-//         res.json(allReservations.rows)
-        
-//     }catch (err){
-//         console.error(err.message);
-//     }
-// });
-
-// module.exports = router; 
+module.exports = router; 

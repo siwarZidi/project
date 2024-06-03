@@ -1,6 +1,5 @@
 const Stat = {
-   ACCEPTED:'active',
+   ACCEPTED:'accepted',
    PENDING:'pending',
    REJECTED:'rejected' 
   };
- 

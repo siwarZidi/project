@@ -15,7 +15,7 @@ const getclubs= expressAsyncHandler(async(req,res)=>{
  const getclub = expressAsyncHandler(async(req,res)=>{
     try{
         const num=req.params.num;
-        const clubb = await club.findOne({clubNum:num});
+        const clubb = await club.findOne({num_club:num});
         res.status(200).json(clubb);
      }catch (err){
        console.error(err.message);
