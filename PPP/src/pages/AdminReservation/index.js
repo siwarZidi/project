@@ -35,6 +35,7 @@ const ListReservations = () => {
   const [clubname, setClubname] = useState("");
   const [numSalle, setNumSalle] = useState("");
   const [statu, setStatu] = useState("");
+  const [email, setEmail] = useState("");
   const [workShopName, setworkShopName] = useState("");
   const [Reservations, setReservations] = useState([]);
 
@@ -89,11 +90,16 @@ const ListReservations = () => {
     }
   };
 
-  const acceptReservation = async (id) => {
+  const acceptReservation = async (id, clubEmail) => {
     try {
-      await fetch(`http://localhost:5000/reservation/accept/${id}`, {
+      await fetch(`http://localhost:5000/reservation/accept`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, clubEmail }),
       });
+      console.log(clubEmail);
       setReservations(Reservations.filter((Reservation) => Reservation.num_reservation !== id));
     } catch (err) {
       console.error(err.message);
@@ -208,6 +214,7 @@ const ListReservations = () => {
                           <th scope="col">End time</th>
                           <th scope="col">Club Name</th>
                           <th scope="col">Status</th>
+                          <th scope="col">Email</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -220,8 +227,9 @@ const ListReservations = () => {
                             <td>{formatTime(Reservation.endtime)}</td>
                             <td>{Reservation.clubname}</td>
                             <td>{Reservation.statu}</td>
+                            <td>{Reservation.email}</td>
                             <td>
-                              <button className="btn btn-vet" onClick={() => acceptReservation(Reservation.num_reservation)}>ACCEPT</button>
+                              <button className="btn btn-vet" onClick={() => acceptReservation(Reservation.num_reservation, Reservation.email)}>ACCEPT</button>
                             </td>
                             <td><button className="btn btn-danger" onClick={() => deleteReservation(Reservation.num_reservation)}>DECLINE</button></td>
                             <td>

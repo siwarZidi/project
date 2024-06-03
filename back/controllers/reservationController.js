@@ -9,8 +9,6 @@ const Club = require('../models/club');
 const getreservation= expressAsyncHandler(async(req,res)=>{
   try {
     const allReservations =  await Reservation.find()
-     
-    console.log(allReservations)
     
     return res.json( allReservations);
   } catch (err) {
@@ -46,7 +44,7 @@ const makereservation = expressAsyncHandler(async (req, res) => {
 
       else{
         const newReservation = await Reservation.create(req.body);
-        res.status(200).send("Réservation ajoutée avec succès.");
+        res.status(200).json({ message: "Réservation ajoutée avec succès.", clubname: newReservation.clubname });
       }
      }
    catch (error) {

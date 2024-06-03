@@ -51,8 +51,9 @@ function Reserve() {
       });
       console.log(response);
       if (response.ok) {
+        const responseData = await response.json();
         console.log("Reservation successful!");
-        navigate("/presentation");
+        navigate(`/club/${responseData.clubname}`);
       } else {
         console.error("Login failed");
         alert("the classroom is already taken !!");
