@@ -29,8 +29,10 @@ import routes from "routes";
 // Images
 import bgImage from "assets/images/bg-sign-in.jpeg";
 import { useNavigate } from "react-router-dom";
+import { useApp } from "context/AppContext";
 
 function SignInBasic() {
+  const {setClub}=useApp();
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
@@ -47,12 +49,22 @@ function SignInBasic() {
         body: JSON.stringify(body),
       });
       if (response.ok) {
-        console.log("Login successful!");
-        navigate("/Reservation");
-      } else {
+        const userData = await response.json();
+        console.log(userData);
+        if (userData.email === 'admin@gmail.com') {
+          // Navigate to reservation page for admin
+          navigate(`/reservation`);
+        } else {
+          // Otherwise, assume it's a club login
+          setClub(userData);
+          localStorage.setItem('club', JSON.stringify(userData));
+          navigate(`/Club/${userData.name}`);
+        }
+      }else {
         console.error("Login failed");
         alert("fail");
       }
+    
     } catch (error) {
       console.error("Error:", error);
     }

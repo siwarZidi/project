@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Kit 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-kit-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useEffect } from "react";
 
 // react-router components
@@ -29,7 +14,14 @@ import Register from "layouts/pages/register";
 
 // Material Kit 2 React routes
 import routes from "routes";
-import Reservation from "layouts/pages/reservation";
+import Reserve from "layouts/pages/reserve";
+import AdminReservation from "layouts/pages/AdminReservation";
+import JCI from "layouts/pages/clubEvent/JCI";
+import ACM from "layouts/pages/clubEvent/ACM";
+import JEI from "layouts/pages/clubEvent/JEI";
+import Securinets from "layouts/pages/clubEvent/Securinets";
+import Acm_Page from "layouts/pages/Club";
+import { UserProvider } from "context/AppContext";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -51,15 +43,25 @@ export default function App() {
     });
 
   return (
+    <UserProvider>
+
+
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Routes>
         {getRoutes(routes)}
         <Route path="/presentation" element={<Presentation />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/reservation" element={<Reservation />} />
+        <Route path="/reservation" element={<AdminReservation />} />
+        <Route path="/reserve" element={<Reserve />} />
         <Route path="*" element={<Navigate to="/presentation" />} />
+        <Route path="/JCI" element={<JCI />} />
+        <Route path="/ACM" element={<ACM />} />
+        <Route path="/JEI" element={<JEI />} />
+        <Route path="/Club/:name" element={<Acm_Page />} />
+        <Route path="/Securinets" element={<Securinets />} />
       </Routes>
     </ThemeProvider>
+    </UserProvider>
   );
 }

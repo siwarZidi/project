@@ -1,17 +1,4 @@
-/*
-=========================================================
-* Material Kit 2 React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-kit-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 import img_acm from "assets/images/clubs-logos/ACM-logo.jpg";
 import img_ieee from "assets/images/clubs-logos/IEEE-logo.jpg";
 import img_jei from "assets/images/clubs-logos/JEI-logo.jpg";
@@ -29,40 +16,47 @@ export default [
       {
         image: img_acm,
         name: "ACM",
-        route: "/sections/page-sections/page-headers",
+        route: "/ACM",
       },
       {
         image: img_ieee,
         name: "IEEE",
-        route: "/sections/page-sections/features",
+        route: "/IEEE",
       },
       {
         image: img_jei,
         name: "JEI",
+        route: "/JEI",
       },
       {
         image: img_aero,
         name: "Aerobotix",
+        route: "/Aerobotix",
       },
       {
         image: img_jci,
         name: "JCI",
+        route: "/JCI",
       },
       {
         image: img_and,
         name: "Android",
+        route: "/Android",
       },
       {
         image: img_sec,
         name: "Securinets",
+        route: "/Securinets",
       },
       {
         image: img_tim,
         name: "Timun",
+        route: "/Timun",
       },
       {
         image: img_chess,
         name: "Chess",
+        route: "/Chess",
       },
     ],
   },
