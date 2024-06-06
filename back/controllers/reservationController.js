@@ -46,7 +46,7 @@ const makereservation = expressAsyncHandler(async (req, res) => {
 
       else{
         const newReservation = await Reservation.create(req.body);
-        res.status(200).send("Réservation ajoutée avec succès.");
+        res.status(200).json({ message: "Réservation ajoutée avec succès.", clubname: newReservation.clubname });
       }
      }
    catch (error) {
@@ -102,8 +102,7 @@ const acceptreservation = expressAsyncHandler(async(req,res)=>{
   
   try{
     const num=req.params.num;
-    const{ statu }='accepted';
-    const reservation= await Reservation.findOneAndUpdate({num_reservation:num},{statu:statu});
+    const reservation= await Reservation.findOneAndUpdate({num_reservation:num},{statu:'accepted'});
 
 }catch(err){
   console.log(err);
@@ -115,8 +114,7 @@ const declinereservation = expressAsyncHandler(async(req,res)=>{
   
   try{
     const num=req.params.num;
-    const{ statu }='rejected';
-    const reservation= await Reservation.findOneAndUpdate({num_reservation:num},{statu:statu});
+    const reservation= await Reservation.findOneAndUpdate({num_reservation:num},{statu:'rejected'});
 
 }catch(err){
   console.log(err);

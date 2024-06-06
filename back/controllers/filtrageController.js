@@ -8,6 +8,7 @@ const Reservation = require('../models/reservation');
 
 const filtrage= expressAsyncHandler(async(req,res)=>{
 const {clubname,num_salle,date,starttime,endtime,statu} = req.body;
+console.log(req.body);
 const filterQuery = {};
 try {
     if(clubname){

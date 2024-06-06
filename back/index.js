@@ -54,8 +54,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const loginRouter= require("./routes/login");
 app.use("/",loginRouter);
 
-/*const filtrageRouter=require("./routes/filtrage");
-app.use("/",filtrageRouter);*/
+const filtrageRouter=require("./routes/filtrage");
+app.use("/",filtrageRouter);
 
 
 
